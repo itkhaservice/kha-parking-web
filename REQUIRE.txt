@@ -1,0 +1,208 @@
+Ý TƯỞNG CỐT LÕI CẦN ÁP DỤNG
+
+Hệ thống chỉ có 1 DATABASE LOGIC duy nhất
+nhưng chạy trên nhiều máy có khả năng thay thế nhau.
+
+Mục tiêu:
+
+❌ Không trùng session xe
+
+❌ Không dừng barrier khi 1 máy hỏng
+
+✅ Đổi máy là chạy tiếp
+
+✅ Dữ liệu luôn đồng bộ
+
+🧠 Kiến trúc tổng thể (áp dụng cho project của bạn)
+3 máy giống nhau hoàn toàn
+Máy A — Gate IN
+Máy B — Gate OUT (Primary DB)
+Máy C — Accountant / Backup
+
+👉 Cả 3 máy đều:
+
+cài Laravel
+
+cài SQL Server
+
+cấu hình giống nhau
+
+KHÔNG có máy “đặc biệt”.
+
+Database hoạt động theo mô hình
+           ACTIVE DB
+              B
+          /         \
+        SYNC       SYNC
+        A            C
+
+B đang là Primary (ghi dữ liệu)
+
+A và C nhận sync realtime
+
+Khi B hỏng
+
+Admin chỉ cần:
+
+Promote A hoặc C → ACTIVE
+
+Không cần sửa code.
+
+✅ Nguyên tắc CODE QUAN TRỌNG (PHẦN NÀY LÀ CỐT LÕI)
+1️⃣ Ứng dụng KHÔNG connect vào IP máy
+
+❌ Sai:
+
+DB_HOST=192.168.1.12
+
+✅ Đúng:
+
+DB_HOST=parking-db
+
+👉 parking-db là hostname hoặc virtual IP.
+
+Sau này chỉ đổi trỏ DNS → hệ thống chạy tiếp.
+
+2️⃣ Session xe phải UNIQUE toàn hệ thống
+
+Đây là chỗ 90% dev bãi xe làm sai.
+
+Table parking_transactions
+id
+ticket_code (UNIQUE)
+plate_number
+time_in
+time_out
+status
+Khi xe vào
+
+KHÔNG tạo session kiểu:
+
+insert new row
+
+mù quáng.
+
+Phải dùng logic:
+BEGIN TRANSACTION
+
+IF NOT EXISTS (
+   SELECT 1
+   FROM parking_transactions
+   WHERE plate_number = ?
+   AND status = 'IN'
+)
+   INSERT SESSION
+
+COMMIT
+
+👉 SQL lock đảm bảo 2 barrier không tạo trùng.
+
+3️⃣ Barrier IN và OUT đều ghi chung DB
+
+Luồng thật:
+
+Camera → Laravel API → SQL PRIMARY
+                        ↓
+                 Sync sang A,C
+
+Không có DB riêng từng máy.
+
+4️⃣ Gate hoạt động qua API (KHÔNG ghi DB trực tiếp)
+
+Thiết kế chuẩn:
+
+Gate Software
+     ↓
+POST /api/vehicle-in
+POST /api/vehicle-out
+     ↓
+Laravel xử lý transaction
+     ↓
+SQL Server
+
+👉 Logic tập trung → không trùng dữ liệu.
+
+5️⃣ Bắt buộc dùng Transaction + Lock
+
+Laravel:
+
+DB::transaction(function () {
+
+   $session = ParkingTransaction::where(
+        'plate_number',$plate
+   )->lockForUpdate()->first();
+
+});
+
+🔥 Đây là chìa khóa chống double scan.
+
+✅ Failover mindset trong code
+
+Ứng dụng KHÔNG cần biết máy nào là DB.
+
+Laravel chỉ cần:
+
+.env
+DB_HOST=parking-db
+
+Khi DB đổi máy:
+
+DNS đổi → app tự reconnect
+
+Barrier không dừng.
+
+✅ Offline safety (nên có – cực thực tế)
+
+Nếu mất DB tạm thời:
+
+Gate lưu local:
+
+local_queue.json
+
+Sau khi DB online:
+
+sync lại API
+
+=> Barrier vẫn mở bình thường.
+
+🧩 Kiến trúc code cuối cùng cho KHA-PARKING
+Camera ANPR
+      ↓
+Gate PC (Laravel Client)
+      ↓ API
+Central Laravel Logic
+      ↓
+SQL Server PRIMARY
+      ↓
+Realtime Sync Replica
+⭐ Checklist IMPLEMENT cho bạn
+Backend
+
+ API vehicle-in
+
+ API vehicle-out
+
+ DB transaction lock
+
+ unique active session
+
+Database
+
+ Unique index active vehicle
+
+ Status IN/OUT rõ ràng
+
+ Always write via API
+
+Infrastructure
+
+ 3 máy cấu hình giống nhau
+
+ SQL replication / mirroring
+
+ DB hostname (không dùng IP)
+
+🔥 Một câu tóm gọn (đúng bản chất hệ thống bạn thấy ngoài đời)
+
+Không phải nhiều máy chạy nhiều database.
+Mà nhiều máy cùng phục vụ một database logic duy nhất có khả năng đổi chủ.
