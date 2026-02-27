@@ -1,163 +1,277 @@
-NHẬT KÝ DỰ ÁN KHA-PARKING
-Ngày khởi tạo: 27/02/2026
-Công nghệ: Laravel 10+, SQL Server 2022 (PCIT\SQLEXPRESS)
+KHA-PARKING SYSTEM
+DEPLOYMENT & SETUP GUIDE
+Version: 1.0
+Created: 27/02/2026
 
-1. TỔNG QUAN HỆ THỐNG
-Hệ thống quản lý bãi giữ xe thông minh: Kiểm soát ra/vào, nhận diện biển số, quản lý thẻ cư dân/vãng lai và tính phí tự động.
+==================================================
 
-2. CẤU TRÚC CƠ SỞ DỮ LIỆU (Database Schema)
-- roles: Phân quyền (IT, Manager, Accountant, Guard).
-- users: Tài khoản người dùng (liên kết role_id).
-- customers: Thông tin chủ xe/cư dân.
-- cards: Quản lý thẻ RFID/QR (UID, loại thẻ, trạng thái, ngày hết hạn).
-- vehicles: Thông tin phương tiện (Biển số, loại xe, màu sắc).
-- gates: Quản lý cổng kiểm soát (Vào/Ra, IP thiết bị).
-- pricing_rules: Cấu hình giá vé (Theo loại xe, giờ, qua đêm).
-- parking_transactions: Lịch sử xe ra/vào (Thời gian, hình ảnh, biển số, phí, nhân viên trực).
+SYSTEM OVERVIEW
+==================================================
 
-3. CÁC CÔNG VIỆC ĐÃ THỰC HIỆN
-- Khởi tạo project Laravel tại E:\Kha Service\KHA-PARKING.
-- Thiết lập file .env kết nối SQL Server (PCIT\SQLEXPRESS, database: kha_parking_db).
-- Tạo và cập nhật 8 file Migration định nghĩa cấu trúc bảng.
-- Tạo 8 Model (User, Role, Customer, Card, Vehicle, Gate, PricingRule, ParkingTransaction) với các mối quan hệ (Relationships).
-- Thiết lập DatabaseSeeder:
-  + Tạo 4 quyền mặc định.
-  + Tạo Admin: admin@khaservice.vn / Admin@123.
-  + Tạo bảng giá mẫu cho Xe máy (2k/h) và Ô tô (10k/h).
-  + Tạo Cổng Chính mặc định.
-- Thiết kế giao diện (UI):
-  + Layout chính (layouts/app.blade.php): Sidebar hiện đại, Responsive Mobile.
-  + Dashboard (index.blade.php): Thống kê xe trong bãi, lượt ra/vào và giao dịch gần đây.
-  + Cấu hình Route trang chủ.
+KHA-PARKING là hệ thống quản lý bãi giữ xe thông minh.
 
-4. HƯỚNG DẪN THIẾT LẬP MÔI TRƯỜNG (SQL Server)
-- Cài đặt PHP Driver cho SQL Server (php_sqlsrv_82_nts_x64.dll & php_pdo_sqlsrv_82_nts_x64.dll).
-- Bật giao thức TCP/IP trong SQL Server Configuration Manager (Port 1433).
-- Bật dịch vụ SQL Server Browser.
-- Tạo database "original_kha_parking_db" trong SSMS.
+Chức năng chính:
 
-BƯỚC 1 — Mở CMD quyền Administrator (BẮT BUỘC)
+Kiểm soát xe ra vào
 
-Start Menu → gõ:
+Nhận diện biển số xe
 
-cmd
+Quản lý thẻ RFID / QR
 
-👉 Right click → Run as administrator
+Tính phí tự động
 
-Nếu không chạy admin → lệnh reg add sẽ FAIL.
+Lưu lịch sử giao dịch
 
-✅ BƯỚC 2 — Bật TCP/IP bằng CMD (chuẩn cho SQL Server 2022)
+Vận hành nhiều cổng barrier
 
-Copy chạy từng dòng:
+Người sử dụng:
 
-🔥 Enable TCP/IP
+Guard (Bảo vệ)
+
+Accountant (Kế toán)
+
+Manager
+
+IT Administrator
+
+Hệ thống sử dụng trình duyệt web, không cần cài phần mềm client.
+
+SYSTEM ARCHITECTURE
+
+Browser (Guard / Accountant)
+|
+v
+Laravel Backend Server
+|
++-- SQL Server 2022 Database
++-- Python AI (License Plate Recognition)
++-- Camera / Barrier Controller
+
+Máy kế toán đóng vai trò:
+
+Application Server
+
+Database Server
+
+Image Storage Server
+
+Các máy bảo vệ truy cập qua mạng LAN.
+
+TECHNOLOGY STACK
+
+Backend: Laravel 10+
+Language: PHP 8.2.x
+Database: SQL Server 2022 Express
+AI Recognition: Python + OpenCV
+Web Server: Laravel built-in / Apache / Nginx
+OS: Windows 10 / Windows Server
+
+DATABASE STRUCTURE
+
+Tables:
+
+roles
+
+users
+
+customers
+
+cards
+
+vehicles
+
+gates
+
+pricing_rules
+
+parking_transactions
+
+Quan hệ chính:
+User -> Role
+Customer -> Vehicles
+Vehicle -> Cards
+Gate -> ParkingTransactions
+
+REQUIRED SOFTWARE
+
+Cài đặt các phần mềm sau:
+
+PHP 8.2.x NTS x64
+
+Composer
+
+SQL Server 2022 Express
+
+SQL Server Management Studio (SSMS)
+
+Microsoft ODBC Driver 17 hoặc 18
+
+Git
+
+PHP CONFIGURATION
+
+Kiểm tra phiên bản:
+
+php -v
+
+Yêu cầu:
+PHP 8.2.x (NTS x64)
+
+Copy các file driver vào:
+
+C:\php82\ext
+
+Files:
+php_sqlsrv_82_nts_x64.dll
+php_pdo_sqlsrv_82_nts_x64.dll
+
+Mở file:
+C:\php82\php.ini
+
+Bật các extension:
+
+extension=openssl
+extension=php_sqlsrv_82_nts_x64.dll
+extension=php_pdo_sqlsrv_82_nts_x64.dll
+
+Kiểm tra:
+
+php -m | findstr sqlsrv
+php -m | findstr openssl
+
+Phải xuất hiện:
+sqlsrv
+pdo_sqlsrv
+openssl
+
+SQL SERVER CONFIGURATION
+
+Instance sử dụng:
+SQLEXPRESS
+
+Mở CMD bằng quyền Administrator.
+
+Enable TCP/IP:
+
 reg add "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQLServer\SuperSocketNetLib\Tcp" /v Enabled /t REG_DWORD /d 1 /f
-🔥 Set port cố định 1433 (tắt dynamic port)
+
+Set port 1433:
+
 reg add "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQLServer\SuperSocketNetLib\Tcp\IPAll" /v TcpPort /t REG_SZ /d 1433 /f
+
 reg add "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQLServer\SuperSocketNetLib\Tcp\IPAll" /v TcpDynamicPorts /t REG_SZ /d "" /f
 
-👉 Dòng này cực quan trọng — nếu không SQL Express vẫn dùng port random.
-
-✅ BƯỚC 3 — Restart SQL Server service
-
-Vì bạn dùng SQLEXPRESS nên service name là:
-
-MSSQL$SQLEXPRESS
-
-Chạy:
+Restart service:
 
 net stop MSSQL$SQLEXPRESS
 net start MSSQL$SQLEXPRESS
 
-Nếu thấy:
+Mở firewall:
 
-The SQL Server (SQLEXPRESS) service was started successfully.
-
-👉 OK.
-
-✅ BƯỚC 4 — Mở Firewall port 1433
 netsh advfirewall firewall add rule name="SQL Server 1433" dir=in action=allow protocol=TCP localport=1433
-✅ BƯỚC 5 — Kiểm tra SQL Server đã nghe port chưa (QUAN TRỌNG)
 
-Chạy:
+Kiểm tra port:
 
 netstat -ano | findstr 1433
 
-Nếu đúng sẽ thấy:
+Phải thấy:
+LISTENING 0.0.0.0:1433
 
-LISTENING    0.0.0.0:1433
+Test kết nối:
 
-👉 nghĩa là SQL Server đã mở TCP thành công.
-
-✅ BƯỚC 6 — Test kết nối thật
 sqlcmd -S 127.0.0.1,1433 -E
 
-Nếu vào được:
+LARAVEL PROJECT SETUP
 
-1>
+Clone project:
 
-=> SQL Server OK 100%.
+git clone <repository>
+cd KHA-PARKING
 
-Call to undefined function Illuminate\Encryption\openssl_cipher_iv_length()
-▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-✦ Lỗi này xuất phát từ việc extension `openssl` chưa được bật trong cấu hình PHP của bạn. Laravel yêu cầu extension này
-  để mã hóa (encryption) và xử lý các khóa bảo mật.
+Cài dependency:
 
-  Để khắc phục, bạn hãy làm theo các bước sau:
+composer install
 
-  1. Kiểm tra vị trí file php.ini
-  Chạy lệnh sau để biết PHP đang dùng file cấu hình nào:
+ENV CONFIGURATION
 
+Mở file .env và cấu hình:
 
-   1 php --ini
-  Tìm dòng Loaded Configuration File. Thông thường nó nằm ở: C:\php\php.ini hoặc trong thư mục XAMPP/WAMP của bạn.
+DB_CONNECTION=sqlsrv
+DB_HOST=127.0.0.1
+DB_PORT=1433
+DB_DATABASE=kha_parking_db
+DB_USERNAME=root
+DB_PASSWORD=
+DB_ENCRYPT=false
+DB_TRUST_SERVER_CERTIFICATE=true
 
+CREATE DATABASE
 
-  2. Bật extension OpenSSL
-   1. Mở file php.ini bằng Notepad hoặc VS Code.
-   2. Tìm dòng: ;extension=openssl (hoặc ;extension=php_openssl.dll trên các bản cũ).
-   3. Xóa dấu chấm phẩy (`;`) ở đầu dòng để nó trở thành:
+Mở SQL Server Management Studio.
 
+Tạo database:
 
-   1    extension=openssl
-   4. Tìm thêm dòng extension_dir = "ext" (hoặc đường dẫn tuyệt đối đến thư mục ext) và đảm bảo nó không bị comment để
-      PHP biết chỗ tìm file extension.
+kha_parking_db
 
+INITIALIZE DATA
 
-  3. Kiểm tra lại
-  Sau khi lưu file php.ini, hãy chạy lệnh này để xác nhận openssl đã được bật:
-   1 php -m | findstr openssl
-  Nếu hiện ra chữ openssl là thành công.
+Chạy lệnh:
 
-Tham khảo cấu hình php.ini
-;extension=curl
-;extension=ffi
-;extension=ftp
-;extension=fileinfo
-;extension=gd
-;extension=gettext
-;extension=gmp
-;extension=intl
-;extension=imap
-;extension=mbstring
-;extension=exif      ; Must be after mbstring as it depends on it
-;extension=mysqli
-;extension=oci8_12c  ; Use with Oracle Database 12c Instant Client
-;extension=oci8_19  ; Use with Oracle Database 19 Instant Client
-;extension=odbc
-extension=openssl
-;extension=pdo_firebird
-;extension=pdo_mysql
-;extension=pdo_oci
-;extension=pdo_odbc
-;extension=pdo_pgsql
-;extension=pdo_sqlite
-;extension=pgsql
-;extension=shmop
-extension=php_sqlsrv_82_nts_x64.dll
-extension=php_pdo_sqlsrv_82_nts_x64.dll
+php artisan migrate --seed
 
-5. LỆNH VẬN HÀNH
-- Khởi tạo dữ liệu: php artisan migrate --seed
-- Chạy web: php artisan serve
-- Truy cập: http://127.0.0.1:8000
+Seeder sẽ tạo:
+
+4 roles mặc định
+
+Admin account
+
+Bảng giá mẫu
+
+Cổng chính
+
+RUN SYSTEM
+
+php artisan serve
+
+Truy cập:
+
+http://127.0.0.1:8000
+
+DEFAULT ACCOUNT
+
+Email: admin@khaservice.vn
+
+Password: Admin@123
+
+IMAGE STORAGE
+
+Ảnh xe được lưu tại:
+
+D:\KHA-PARKING\storage\vehicles\
+
+Database chỉ lưu đường dẫn file.
+
+DAILY MAINTENANCE COMMANDS
+
+Clear cache:
+
+php artisan optimize:clear
+
+Restart queue:
+
+php artisan queue:restart
+
+COMMON ERRORS
+
+openssl_cipher_iv_length:
+=> chưa bật extension openssl
+
+TCP connection refused:
+=> SQL Server chưa bật TCP/IP hoặc port 1433
+
+Could not open artisan:
+=> chưa cd vào thư mục project
+
+END OF DOCUMENT
+
+==================================================
