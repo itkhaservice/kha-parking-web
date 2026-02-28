@@ -30,8 +30,9 @@ class SettingController extends Controller
                 ]);
             }
 
-            // Bước 2: Thử tạo DSN (Hỗ trợ Named Instance như Server\SQLEXPRESS)
-            $dsn = "sqlsrv:Server=$server;Database=$database;LoginTimeout=5;Encrypt=false;TrustServerCertificate=true";
+            // Bước 2: Thử tạo DSN (Khớp Screenshot: Mandatory Encryption + Trust Certificate)
+            // Lưu ý: Không đưa Database vào đây khi test để tránh lỗi nếu DB chưa được tạo
+            $dsn = "sqlsrv:Server=$server;LoginTimeout=5;Encrypt=true;TrustServerCertificate=true";
             
             // Bước 3: Thử kết nối thực tế
             $conn = new PDO($dsn, $user, $pass, [
@@ -40,7 +41,7 @@ class SettingController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Kết nối SQL Server thành công!'
+                'message' => 'KẾT NỐI SQL SERVER THÀNH CÔNG!'
             ]);
 
         } catch (\Throwable $e) {
