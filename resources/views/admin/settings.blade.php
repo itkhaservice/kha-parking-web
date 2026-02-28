@@ -77,7 +77,7 @@
     <!-- GLOBAL FOOTER -->
     <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 10px 15px; background: #E1E1E1; border-top: 1px solid #999; flex-shrink: 0;">
         <button onclick="window.location.href='{{ route('dashboard.guard') }}'" class="btn-action px-10 hover:bg-gray-200 transition-colors">Thoát</button>
-        <button class="btn-action btn-blue px-12 font-bold">Lưu Toàn Bộ Cài Đặt</button>
+        <button onclick="saveAllSettings()" class="btn-action btn-blue px-12 font-bold shadow-lg">Lưu Toàn Bộ Cài Đặt</button>
     </div>
 </div>
 
@@ -260,6 +260,63 @@
 
         // Scroll into view
         el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function saveAllSettings() {
+        const settingsData = {};
+        // Thu thập tất cả input, select trong các tab-pane
+        const inputs = document.querySelectorAll('.tab-pane input, .tab-pane select, .tab-pane textarea');
+        
+        inputs.forEach(input => {
+            // Nếu không có name hoặc id thì bỏ qua
+            if (!input.name && !input.id) return;
+            const key = input.name || input.id;
+
+            if (input.type === 'checkbox') {
+                settingsData[key] = input.checked ? 1 : 0;
+            } else if (input.type === 'radio') {
+                if (input.checked) {
+                    settingsData[key] = input.value;
+                }
+            } else {
+                settingsData[key] = input.value;
+            }
+        });
+
+        // Thêm cài đặt từ Modal Pricing
+        const activeMethod = document.querySelector('input[name="pricing_method"]:checked');
+        if (activeMethod) settingsData['active_pricing_method'] = activeMethod.value;
+
+        // Hiệu ứng nút bấm
+        const btn = document.querySelector('button[onclick="saveAllSettings()"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> ĐANG LƯU...';
+
+        fetch('{{ route('admin.settings.save') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(settingsData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✓ Đã lưu toàn bộ cấu hình vào Database thành công!');
+            } else {
+                alert('✕ Lỗi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Save Error:', error);
+            alert('✕ Lỗi kết nối Server không thể lưu!');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        });
     }
 
     function testDbConnection() {
