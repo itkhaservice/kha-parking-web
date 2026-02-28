@@ -230,6 +230,8 @@
         .bg-success { background-color: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
         .bg-error { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
     </style>
+    <!-- CSRF Token for AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
@@ -273,11 +275,11 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Tài khoản</label>
-                    <input type="text" id="adminUser" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
+                    <input type="text" id="adminUser" autocomplete="off" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Mật khẩu</label>
-                    <input type="password" id="adminPass" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
+                    <input type="password" id="adminPass" autocomplete="new-password" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
                 </div>
                 <div id="authError" class="hidden text-red-600 text-[10px] text-center font-bold uppercase tracking-tighter">Thông tin không chính xác!</div>
                 <div class="grid grid-cols-2 gap-3 pt-2">
@@ -424,13 +426,31 @@
         function verifyLogin() {
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
+            const errorEl = document.getElementById('authError');
             
-            if (user === 'ITKHA' && pass === '0310341786') {
-                window.location.href = `/admin/${targetRoute}`;
-            } else {
-                document.getElementById('authError').classList.remove('hidden');
-                document.getElementById('adminPass').value = '';
-            }
+            fetch('{{ route('admin.login.post') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ user, pass, target: targetRoute })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.url;
+                } else {
+                    errorEl.innerText = data.message;
+                    errorEl.classList.remove('hidden');
+                    document.getElementById('adminPass').value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorEl.innerText = 'Lỗi kết nối server!';
+                errorEl.classList.remove('hidden');
+            });
         }
 
         function updateClock() {

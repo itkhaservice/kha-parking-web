@@ -256,5 +256,41 @@
         // Scroll into view
         el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+
+    function testDbConnection() {
+        const statusEl = document.getElementById('db_test_status');
+        const user = document.getElementById('db_user').value;
+        const pass = document.getElementById('db_pass').value;
+        const name = document.getElementById('db_name').value;
+        const server = "DESKTOP-4P0F01E"; // Lấy từ input server name nếu cần
+
+        statusEl.classList.remove('hidden', 'text-green-600', 'text-red-600');
+        statusEl.classList.add('text-blue-600');
+        statusEl.innerText = 'Đang kiểm tra kết nối...';
+
+        fetch('{{ route('admin.settings.test_db') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                server_name: server,
+                db_user: user,
+                db_pass: pass,
+                db_name: name
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            statusEl.innerText = data.message;
+            statusEl.classList.remove('text-blue-600');
+            statusEl.classList.add(data.success ? 'text-green-600' : 'text-red-600');
+        })
+        .catch(error => {
+            statusEl.innerText = 'Lỗi hệ thống không thể kiểm tra!';
+            statusEl.classList.add('text-red-600');
+        });
+    }
 </script>
 @endsection

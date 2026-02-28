@@ -23,15 +23,21 @@
                     </div>
                     
                     <div class="pt-2">
-                        <div class="text-[10px] font-black text-[#108042] mb-3 flex items-center gap-2">
-                            <span class="bg-[#108042] w-2 h-2 rounded-full"></span>
-                            KẾT NỐI DATABASE SQL SERVER
+                        <div class="text-[10px] font-black text-[#108042] mb-3 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-[#108042] w-2 h-2 rounded-full"></span>
+                                KẾT NỐI DATABASE SQL SERVER
+                            </div>
+                            <button type="button" onclick="testDbConnection()" class="text-[9px] bg-white border border-[#108042] text-[#108042] px-2 py-0.5 rounded hover:bg-green-50 transition-all font-bold">
+                                <i class="fas fa-plug mr-1"></i> KIỂM TRA KẾT NỐI
+                            </button>
                         </div>
                         <div class="space-y-2 bg-gray-50/50 p-3 rounded-lg border border-dashed border-gray-300">
-                            <div class="f-row"><span class="f-label !w-28 text-gray-500">UserName:</span><input type="text" value="sa" class="f-input flex-1 border-gray-200"></div>
-                            <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" value="******" class="f-input flex-1 border-gray-200"></div>
-                            <div class="f-row"><span class="f-label !w-28 text-gray-700 font-bold">Database:</span><input type="text" value="khaservice_parking" class="f-input font-black text-red-700 flex-1 border-red-100 bg-red-50/30"></div>
+                            <div class="f-row"><span class="f-label !w-28 text-gray-500">UserName:</span><input type="text" id="db_user" value="sa" class="f-input flex-1 border-gray-200"></div>
+                            <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" id="db_pass" value="******" class="f-input flex-1 border-gray-200"></div>
+                            <div class="f-row"><span class="f-label !w-28 text-gray-700 font-bold">Database:</span><input type="text" id="db_name" value="khaservice_parking" class="f-input font-black text-red-700 flex-1 border-red-100 bg-red-50/30"></div>
                         </div>
+                        <div id="db_test_status" class="mt-2 text-[10px] font-bold hidden"></div>
                     </div>
                 </div>
             </div>
