@@ -3,61 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kha-Parking Admin | @yield('title')</title>
+    <title>KHA-PARKING Admin | @yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .sidebar-link { @apply flex items-center space-x-3 p-3 rounded-lg transition-all; }
-        .sidebar-link:hover { @apply bg-gray-700 text-green-400; }
-        .sidebar-link.active { @apply bg-green-700 text-white shadow-lg; }
-        .admin-card { @apply bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-xl; }
+        :root {
+            --primary-blue: #0B3D91;
+            --bg-light: #F0F2F5;
+            --panel-white: #FFFFFF;
+            --border-color: #D1D5DB;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+        }
+        body { background-color: var(--bg-light); color: var(--text-dark); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* HEADER - SYNCED WITH DASHBOARD */
+        header.main-header {
+            height: 7vh;
+            min-height: 50px;
+            background: linear-gradient(to bottom, #FFFFFF, #F9FAFB);
+            border-bottom: 3px solid var(--primary-blue);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            align-items: center;
+            padding: 0 15px;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .text-clock { font-size: clamp(16px, 1.4vw, 24px); font-weight: 700; font-family: 'Courier New', monospace; color: #1D4ED8; }
+        .text-label { font-size: clamp(8px, 0.55vw, 10px); text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 800; }
+        .text-value { font-size: clamp(11px, 0.85vw, 15px); font-weight: 700; color: var(--text-dark); }
+
+        .stat-group {
+            background: #F3F4F6;
+            border: 1px solid var(--border-color);
+            padding: 4px 15px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stat-item { display: flex; align-items: center; gap: 8px; }
+        .stat-divider { width: 1px; height: 12px; background: var(--border-color); }
+
+        /* Navigation Buttons */
+        .nav-link { @apply text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1 uppercase; }
+        .nav-link.active { @apply text-blue-700 underline; }
+
+        /* Content Area */
+        main.admin-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans flex h-screen overflow-hidden">
+<body>
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
-        <div class="p-6 border-b border-gray-700">
-            <h1 class="text-xl font-bold text-green-500 uppercase tracking-tighter">
-                <i class="fas fa-user-shield mr-2"></i>Admin Panel
-            </h1>
-        </div>
-        <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
-            <a href="{{ route('admin.management') }}" class="sidebar-link {{ request()->routeIs('admin.management') ? 'active' : '' }}">
-                <i class="fas fa-users-cog w-5"></i><span>Quản trị</span>
-            </a>
-            <a href="{{ route('admin.history') }}" class="sidebar-link {{ request()->routeIs('admin.history') ? 'active' : '' }}">
-                <i class="fas fa-history w-5"></i><span>Lịch sử</span>
-            </a>
-            <a href="{{ route('admin.statistics') }}" class="sidebar-link {{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
-                <i class="fas fa-chart-pie w-5"></i><span>Thống kê</span>
-            </a>
-            <a href="{{ route('admin.settings') }}" class="sidebar-link {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
-                <i class="fas fa-sliders-h w-5"></i><span>Cài đặt</span>
-            </a>
-        </nav>
-        <div class="p-4 border-t border-gray-700">
-            <a href="/" class="flex items-center space-x-3 p-3 text-gray-400 hover:text-white transition">
-                <i class="fas fa-sign-out-alt w-5"></i><span>Thoát Admin</span>
-            </a>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-grow flex flex-col overflow-hidden">
-        <header class="h-16 bg-gray-800 border-b border-gray-700 flex items-center justify-between px-8">
-            <h2 class="text-lg font-semibold">@yield('title')</h2>
-            <div class="flex items-center space-x-4">
-                <span class="text-xs text-gray-400">Chào, <strong class="text-green-400">ITKHA</strong></span>
-                <div class="w-8 h-8 bg-green-700 rounded-full flex items-center justify-center">
-                    <i class="fas fa-user text-xs"></i>
-                </div>
+    <header class="main-header">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-900 rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
+                <h1 class="text-base font-black tracking-widest text-blue-900">KHA-PARKING</h1>
             </div>
-        </header>
-        <div class="flex-grow p-8 overflow-y-auto">
-            @yield('content')
+            <div class="h-4 w-[1px] bg-gray-300"></div>
         </div>
+        
+        <div class="text-center">
+            <div id="global-clock" class="text-clock text-blue-700">10:15:20 - 28/02/2026</div>
+        </div>
+
+        <div class="flex justify-end">
+            <div class="stat-group">
+                <div class="stat-item"><span class="text-label">Doanh thu:</span><span class="text-value text-orange-600">1,250,000</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="text-label">Trong bãi:</span><span class="text-value text-green-600">142</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="text-label">Ngoài bãi:</span><span class="text-value text-blue-600">85</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-body">
+        @yield('content')
     </main>
 
+    <script>
+        function updateGlobalClock() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const y = now.getFullYear();
+            const h = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('global-clock');
+            if (clockEl) clockEl.innerText = h + ":" + min + ":" + s + " - " + d + "/" + m + "/" + y;
+        }
+        setInterval(updateGlobalClock, 1000);
+        updateGlobalClock();
+    </script>
 </body>
 </html>

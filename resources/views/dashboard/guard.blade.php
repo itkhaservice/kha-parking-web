@@ -150,7 +150,7 @@
             height: 50px; 
             border-top: 1px solid var(--border-light);
             display: flex;
-            justify-content: space-between; /* Horizontal layout */
+            justify-content: space-between;
             align-items: center;
             background: #F9FAFB;
             padding: 0 12px;
@@ -233,6 +233,7 @@
 </head>
 <body>
 
+    <!-- HEADER -->
     <header>
         <div class="flex items-center space-x-6">
             <div class="flex items-center space-x-3">
@@ -241,9 +242,9 @@
             </div>
             <div class="h-4 w-[1px] bg-gray-300"></div>
             <div class="flex items-center space-x-4">
-                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP</button>
-                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-cog"></i> CÀI ĐẶT</button>
-                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-user-shield"></i> QUẢN TRỊ</button>
+                <button onclick="checkAdmin('guard')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP</button>
+                <button onclick="checkAdmin('settings')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-cog"></i> CÀI ĐẶT</button>
+                <button onclick="checkAdmin('management')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-user-shield"></i> QUẢN TRỊ</button>
             </div>
         </div>
         <div class="text-center"><div id="clock" class="text-clock text-blue-700">10:15:20 - 28/02/2026</div></div>
@@ -258,6 +259,29 @@
         </div>
     </header>
 
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200]">
+        <div class="bg-white p-8 border-t-4 border-blue-900 shadow-2xl w-80 rounded-sm">
+            <h2 class="text-sm font-black mb-6 text-blue-900 text-center uppercase tracking-widest">Xác nhận IT Admin</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Tài khoản</label>
+                    <input type="text" id="adminUser" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-blue-900 focus:outline-none text-center font-bold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Mật khẩu</label>
+                    <input type="password" id="adminPass" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-blue-900 focus:outline-none text-center font-bold">
+                </div>
+                <div id="authError" class="hidden text-red-600 text-[10px] text-center font-bold uppercase tracking-tighter">Thông tin không chính xác!</div>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="closeModal()" class="text-xs font-bold text-gray-400 hover:text-gray-600 uppercase">Hủy</button>
+                    <button onclick="verifyLogin()" class="bg-blue-900 text-white text-xs py-2 font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN BODY -->
     <div class="dashboard-body">
         
         <!-- LEFT LANE -->
@@ -276,7 +300,7 @@
                         </div>
                     </div>
                     <div class="ai-lower-part">
-                        <div class="text-label">NHẬN DIỆN AI:</div>
+                        <div class="text-label">AI:</div>
                         <div class="flex items-center space-x-2">
                             <span class="text-plate text-blue-600">51-G1-77777</span>
                             <span class="text-red-600 font-black text-xs">≠</span>
@@ -332,7 +356,7 @@
                         </div>
                     </div>
                     <div class="ai-lower-part">
-                        <div class="text-label">NHẬN DIỆN AI:</div>
+                        <div class="text-label">AI:</div>
                         <div class="flex items-center space-x-2">
                             <span class="text-plate text-blue-600">64-H1-06910</span>
                             <span class="text-green-600 font-black text-xs">✓</span>
@@ -360,7 +384,7 @@
                     </div>
                     <div class="fee-panel">
                         <div class="text-label">THANH TOÁN (PHÍ LƯỢT):</div>
-                        <div class="flex items-baseline space-x-2"><div class="text-2xl font-black text-gray-400">---</div><div class="text-[9px] text-gray-500 font-bold">VNĐ</div></div>
+                        <div class="flex items-baseline space-x-2"><div class="text-2xl font-black text-gray-400">---</div><div class="text-[9px] text-gray-600 font-bold">VNĐ</div></div>
                     </div>
                 </div>
             </div>
@@ -375,6 +399,33 @@
     </div>
 
     <script>
+        let targetRoute = '';
+        
+        function checkAdmin(feature) {
+            targetRoute = feature;
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('adminUser').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminUser').value = '';
+            document.getElementById('adminPass').value = '';
+            document.getElementById('authError').classList.add('hidden');
+        }
+
+        function verifyLogin() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            
+            if (user === 'ITKHA' && pass === '0310341786') {
+                window.location.href = `/admin/${targetRoute}`;
+            } else {
+                document.getElementById('authError').classList.remove('hidden');
+                document.getElementById('adminPass').value = '';
+            }
+        }
+
         function updateClock() {
             const now = new Date();
             const d = String(now.getDate()).padStart(2, '0');
