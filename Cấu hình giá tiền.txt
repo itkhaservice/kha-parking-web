@@ -1,0 +1,219 @@
+PROMPT THIẾT KẾ UI WEB – MÀN HÌNH XEM CHI TIẾT LOẠI BẢNG GIÁ (KHA PARKING)
+
+Thiết kế giao diện web quản trị cấu hình bảng giá giữ xe chuyên nghiệp, mô phỏng phần mềm desktop vận hành bãi xe. Giao diện có mật độ thông tin cao, bố cục kỹ thuật, không dùng style SaaS lớn.
+
+Giao diện phải giống phần mềm cấu hình thực tế, hiển thị đầy đủ các ô nhập liệu và giá trị mặc định.
+
+I. HEADER MÀN HÌNH
+
+Hiển thị trên cùng:
+
+Tên bảng giá:
+Textbox txtTenBangGia = “Bảng giá xe máy”
+
+Loại xe:
+Combobox cboLoaiXe = “Xe máy”
+
+Ghi chú:
+Textbox txtGhiChu = “Áp dụng giữ xe vãng lai”
+
+II. KHU VỰC CHỌN LOẠI BẢNG GIÁ
+
+Hiển thị 5 PANEL xếp dọc, có scrollbar.
+
+Mỗi panel gồm:
+
+Checked Button (radio style) bên trái tiêu đề
+
+Border rõ ràng
+
+Màu nền riêng
+
+Chỉ được chọn 1 panel tại một thời điểm
+
+Panel được chọn enable toàn bộ control bên trong
+
+Panel không chọn bị disable (opacity thấp)
+
+PANEL 1 — CÁCH 1 (ĐANG CHỌN)
+Màu nền: Xanh dương nhạt
+
+Tiêu đề:
+CÁCH 1 – Khung 2 múi giờ theo Quyết định 32 TP.HCM
+
+A. RADIO GROUP (TẦNG LỰA CHỌN THỨ 2)
+
+Tiêu đề nhóm:
+Phương thức tính tiền
+
+Bao gồm 5 Radio Button:
+
+(1) Theo Quyết định 32 — SELECTED
+(2) Tính theo lượt
+(3) Tính block giờ
+(4) Gộp ngày đêm
+(5) Tự động qua đêm
+
+Radio hiển thị dạng danh sách dọc phía trên khu vực cấu hình giờ.
+
+Chỉ PANEL CÁCH 1 mới có nhóm radio này.
+
+B. CẤU HÌNH KHUNG GIỜ
+
+Dòng 1:
+Từ giờ: TimePicker = 05:00:00
+Đến giờ: TimePicker = 21:00:00
+Giá tiền: Numeric textbox = 3000
+
+Dòng 2:
+Từ giờ: TimePicker = 21:00:00
+Đến giờ: TimePicker = 23:59:59
+Giá tiền: Numeric textbox = 5000
+
+Qua đêm:
+Numeric textbox = 8000
+
+C. HÀNH VI RADIO BUTTON
+
+Theo Quyết định 32:
+
+Enable toàn bộ khung giờ
+
+Dùng giá qua đêm riêng
+
+Tính theo lượt:
+
+Không cộng dồn thời gian
+
+Disable rule nâng cao
+
+Tính block giờ:
+
+Hiện thêm field:
+Block thời gian (giờ) = 6
+
+Gộp ngày đêm:
+
+Enable ô “Giá trọn ngày đêm”
+
+Tự động qua đêm:
+
+Khi vượt giờ đêm tự áp giá qua đêm
+
+PANEL 2 — CÁCH 2
+Màu nền: Xanh lá
+
+Tiêu đề:
+CÁCH 2 – 2 múi giờ cộng dồn theo khung
+
+Cấu hình:
+
+Từ giờ 06:00:00 → 22:00:00
+Giá tiền = 3000
+
+Từ giờ 22:00:00 → 23:59:59
+Giá tiền = 5000
+
+Qua đêm = 8000
+
+Mô tả:
+Tiền được cộng dồn theo từng khung giờ xe đi qua.
+
+PANEL 3 — CÁCH 3
+Màu nền: Vàng
+
+Tiêu đề:
+CÁCH 3 – 3 múi giờ (Ngày / Mức 2 / Qua đêm)
+
+Cấu hình:
+
+06:00:00 → 19:00:00
+Giá tiền = 3000
+
+19:00:00 → 22:59:59
+Giá tiền = 5000
+
+Qua đêm = 8000
+
+Tiền cộng dồn theo từng múi giờ.
+
+PANEL 4 — CÁCH 4
+Màu nền: Cam
+
+Tiêu đề:
+CÁCH 4 – 3 múi giờ + lệch múi giờ 2 tiếng
+
+Cấu hình giống Cách 3:
+
+06:00:00 → 19:00:00
+Giá tiền = 3000
+
+19:00:00 → 22:59:59
+Giá tiền = 5000
+
+Qua đêm = 8000
+
+Checkbox:
+Áp dụng quy tắc lệch múi giờ 2 tiếng = CHECKED
+
+Mô tả:
+Nếu tổng thời gian lưu bãi chưa vượt 2 giờ thì chưa chuyển mức giá.
+
+Ví dụ:
+Vào 05:59 ra 06:01 vẫn tính 3000.
+
+PANEL 5 — CÁCH 5
+Màu nền: Đỏ nhạt
+
+Tiêu đề:
+CÁCH 5 – 2 múi giờ + quy tắc 9 giờ sáng
+
+Cấu hình:
+
+06:00:00 → 21:00:00
+Giá tiền = 3000
+
+21:00:00 → 23:59:59
+Giá tiền = 5000
+
+Cả ngày + đêm = 8000
+
+Checkbox:
+Chỉ cộng dồn khi vượt 09:00 sáng = CHECKED
+
+Ví dụ:
+Vào 05:00
+Ra trước 09:00 → 3000
+Ra sau 09:00 → 8000
+
+III. FOOTER
+
+Nút chức năng:
+
+[LƯU CẤU HÌNH] (Primary button)
+[ĐÓNG]
+
+IV. QUY TẮC UI BẮT BUỘC
+
+Chỉ chọn được 1 panel tại một thời điểm.
+
+Panel được chọn highlight màu đậm hơn.
+
+Panel khác disable toàn bộ input.
+
+TimePicker định dạng HH:mm:ss.
+
+Giá tiền chỉ nhập số.
+
+Khi chọn panel tự scroll tới panel đó.
+
+Layout responsive desktop:
+1366x768
+1920x1080
+2560x1440
+
+Không dùng card UI lớn kiểu SaaS.
+
+Giao diện mang phong cách phần mềm vận hành kỹ thuật.
+
+PROMPT KẾT THÚC

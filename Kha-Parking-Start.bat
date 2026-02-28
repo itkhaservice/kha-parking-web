@@ -98,9 +98,20 @@ if %FAILED% equ 1 (
         )
         :: Xoa cache cu de chay muot hon
         php artisan config:clear >nul 2>&1
+        php artisan view:clear >nul 2>&1
         
-        start http://127.0.0.1:8000
-        echo Dang chay may chu... Vui long khong tat cua so nay.
+        echo.
+        echo Dang khoi dong Giao dien (Vite)...
+        start /min cmd /c "npm run dev"
+        
+        echo Dang khoi dong Server tai: http://127.0.0.1:8000
+        timeout /t 3 /nobreak >nul
+        start http://127.0.0.1:8000/dashboard/guard
+        
+        echo.
+        echo ======================================================
+        echo   DANG CHAY HE THONG... VUI LONG KHONG TAT CUA SO NAY.
+        echo ======================================================
         php artisan serve --port=8000
     ) else (
         exit

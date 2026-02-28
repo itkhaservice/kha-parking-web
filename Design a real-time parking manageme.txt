@@ -1,0 +1,346 @@
+Design a real-time parking management control dashboard for a vehicle parking system called KHA-PARKING.
+
+The UI must look like an industrial monitoring software, not a modern SaaS dashboard.
+
+Resolution target: 1920x1080 fullscreen desktop.
+
+Style: security monitoring system, dense information, operational environment used by parking operators.
+
+HEADER (Full Width Top Bar)
+
+Create a horizontal header divided into 3 sections:
+
+LEFT
+
+Company Logo
+
+System name: KHA-PARKING
+
+Bold uppercase text
+
+CENTER
+
+Real-time clock display
+
+Format:
+28/02/2026 - 09:41:52
+
+Digital clock style
+
+Updates every second
+
+Large readable font
+
+RIGHT
+
+Display system statistics:
+
+Total visitor revenue (Tổng doanh thu vãng lai)
+
+Vehicles inside parking (Xe trong bãi)
+
+Vehicles outside parking (Xe ngoài bãi)
+
+Use compact statistic cards aligned horizontally.
+
+BODY LAYOUT
+
+The body is divided into 2 vertical lanes:
+
+LEFT SIDE → EXIT LANE (Làn Ra)
+
+RIGHT SIDE → ENTRY LANE (Làn Vào)
+
+Both lanes must be symmetrical.
+
+EACH LANE STRUCTURE
+1️⃣ LIVE CAMERA AREA (TOP)
+
+Two live camera frames:
+
+LEFT: License plate close-up camera
+
+RIGHT: Front overview camera
+
+Requirements:
+
+Same height as the information block (approx. 4 info rows)
+
+Video placeholder style
+
+Thin borders
+
+Dark monitoring background
+
+2️⃣ LICENSE PLATE RECOGNITION SECTION
+
+Below live cameras:
+
+Two small license plate image frames:
+
+Entry lane: only one active plate image
+
+Exit lane: shows entry & exit comparison plates
+
+Under each plate image:
+
+AI detected license plate text
+
+Large bold font
+
+Layout:
+Plate images aligned horizontally.
+
+3️⃣ VEHICLE CARD INFORMATION PANEL
+
+Next to license plate images display vehicle/card info:
+
+Information rows:
+
+Row 1:
+
+Card ID | Card Type | Parking Duration (empty for monthly cards)
+
+Row 2:
+
+Card Owner | Registered License Plate
+
+Row 3:
+
+Card Registration Period (start date – expiry date)
+
+Row 4:
+
+Entry Time | Exit Time
+
+Layout style:
+
+Grid/table format
+
+Compact industrial UI
+
+High readability
+
+4️⃣ EMPTY FUNCTIONAL AREA
+
+Next to AI plate recognition area:
+
+ENTRY lane → keep empty
+
+EXIT lane → display parking fee calculation area
+
+This area must align horizontally with plate recognition section.
+
+5️⃣ CAPTURED IMAGE AREA
+
+Below the main content:
+
+Two additional camera frames showing:
+
+Captured snapshot images saved into system
+
+Must mirror layout of live cameras above.
+
+6️⃣ STATUS NOTIFICATION BAR (BOTTOM)
+
+At bottom of each lane:
+
+A full-width notification bar showing system messages:
+
+Examples:
+
+Waiting for vehicle
+
+License plate mismatch
+
+Access granted
+
+Please proceed
+
+Color logic:
+
+Blue → waiting
+
+Green → success
+
+Red → warning/error
+
+Must resemble industrial alert system.
+
+VISUAL STYLE REQUIREMENTS
+
+Monitoring/control room aesthetic
+
+Minimal rounded corners
+
+Dense layout spacing
+
+Sharp borders
+
+Dark gray panels
+
+Deep blue header
+
+Red highlight for license plate mismatch
+
+Green highlight for valid recognition
+
+Avoid:
+
+Modern SaaS card style
+
+Excessive whitespace
+
+Mobile-first layout
+
+TECH TARGET
+
+Design components suitable for:
+
+React / Next.js
+
+Tailwind CSS
+
+WebSocket realtime updates
+
+Live camera streaming placeholders
+
+OUTPUT
+
+Generate a high-fidelity operational dashboard UI ready for development handoff.
+
+Responsive & Multi-Monitor Optimization
+
+The parking dashboard must scale perfectly across different desktop monitor sizes commonly used in control rooms:
+
+Supported displays:
+
+19 inch (1366×768)
+
+21 inch (1600×900)
+
+24 inch (1920×1080) → PRIMARY TARGET
+
+27 inch (2560×1440)
+
+Layout Behavior
+1. Fixed Logical Structure (NO MOBILE REFLOW)
+
+The UI must never stack vertically like a mobile layout.
+
+Entry Lane and Exit Lane must always remain side-by-side.
+
+Maintain symmetrical dual-lane monitoring layout.
+
+2. Fluid Grid Scaling
+
+Use proportional layout instead of fixed pixels:
+
+Header height: 6–8% of screen height
+
+Camera areas scale proportionally
+
+Information panels expand horizontally
+
+Notification bars keep fixed readable height
+
+Prefer:
+
+CSS Grid
+
+Flexbox
+
+percentage widths
+
+viewport units (vw / vh)
+
+Avoid fixed px-based layouts.
+
+3. Smart Font Scaling
+
+Fonts must scale automatically:
+
+License plate text → always dominant visual element
+
+Clock font increases on larger screens
+
+Minimum readable size on 1366×768
+
+Use:
+
+clamp()
+
+rem units
+
+responsive typography scale
+
+Example:
+
+font-size: clamp(14px, 1.2vw, 24px);
+4. Camera Frame Scaling Rules
+
+Camera frames must:
+
+Maintain aspect ratio (16:9)
+
+Expand proportionally with screen size
+
+Never overflow container
+
+Never create vertical scrolling
+
+Dashboard must fit entirely on one screen without scrolling.
+
+5. Density Adaptation
+
+Smaller screens (19"):
+
+Reduce padding
+
+Compact info rows
+
+Keep all information visible
+
+Larger screens (27"):
+
+Increase spacing slightly
+
+Expand camera visibility
+
+Maintain operator readability from distance
+
+6. Operator Viewing Distance Optimization
+
+UI must remain readable from 1.5–2 meters away:
+
+Large plate numbers
+
+High contrast text
+
+Clear alert colors
+
+This is an industrial monitoring interface, not a consumer web app.
+
+7. Technical Implementation Target
+
+Design compatible with:
+
+CSS Grid auto-fit / auto-fill
+
+Tailwind responsive breakpoints
+
+Fullscreen kiosk mode
+
+Multi-monitor environment
+
+Output Requirement
+
+Provide layout behavior demonstrating how UI adapts between:
+
+1366×768
+
+1920×1080
+
+2560×1440
+
+without changing structural layout.
