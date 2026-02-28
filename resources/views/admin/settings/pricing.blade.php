@@ -13,44 +13,48 @@
     </div>
 
     <!-- Main Pricing Matrix -->
-    <div class="grid grid-cols-3 gap-3 bg-gray-50 border border-gray-300 p-3 mb-3 rounded shadow-sm">
-        <!-- Múi giờ 1 -->
-        <div class="space-y-2">
-            <div class="f-row"><span class="f-label !w-16 text-gray-600">Từ Giờ</span><input type="text" value="06:00:00" class="f-input center !w-24 font-bold text-blue-700"></div>
-            <div class="f-row"><span class="f-label !w-16 text-gray-600">Đến Giờ</span><input type="text" value="22:00:00" class="f-input center !w-24 font-bold text-blue-700"></div>
-            <div class="pt-2">
-                <label class="check-box font-bold text-gray-800"><input type="checkbox" checked class="accent-[#108042]"><span>Thời gian miễn phí</span></label>
-                <div class="flex items-center gap-2 mt-1">
-                    <input type="text" value="300" class="f-input center !w-16 ml-6 font-bold text-green-700 border-green-500 bg-green-50">
-                    <span class="text-[9px] italic text-gray-500">(giây)</span>
+    <div class="bg-gray-50 border border-gray-300 p-3 mb-3 rounded shadow-sm">
+        <div class="grid grid-cols-5 gap-4 items-start">
+            <!-- Cột 1: Giờ Múi 1 & Miễn phí -->
+            <div class="space-y-2 border-r border-gray-200 pr-3">
+                <div class="f-row"><span class="f-label !w-16 text-gray-600">Từ Giờ</span><input type="text" value="06:00:00" class="f-input center flex-1 font-bold text-blue-700"></div>
+                <div class="f-row"><span class="f-label !w-16 text-gray-600">Đến Giờ</span><input type="text" value="22:00:00" class="f-input center flex-1 font-bold text-blue-700"></div>
+                <div class="pt-1">
+                    <label class="check-box font-bold text-gray-800"><input type="checkbox" checked class="accent-[#108042]"><span>TG Miễn phí</span></label>
+                    <input type="text" value="300" class="f-input center !w-full mt-1 font-bold text-green-700 border-green-500 bg-green-50">
                 </div>
             </div>
-        </div>
-        <!-- Giá Tiền Múi 1 & 2 -->
-        <div class="grid grid-cols-2 gap-3 border-l border-gray-200 pl-3">
-            <div class="space-y-2">
+
+            <!-- Cột 2: Giá Tiền Múi 1 -->
+            <div class="space-y-2 border-r border-gray-200 pr-3">
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">Giá Tiền XS</span><input type="text" value="5000" class="f-input right font-bold flex-1 text-gray-800"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">Giá Tiền TG</span><input type="text" value="5000" class="f-input right font-bold flex-1 text-gray-800"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-400">Giá Tiền XĐ</span><input type="text" value="0" class="f-input right flex-1 text-gray-400"></div>
             </div>
-            <div class="space-y-2">
+
+            <!-- Cột 3: Giờ Múi 2 -->
+            <div class="space-y-2 border-r border-gray-200 pr-3">
                 <div class="f-row"><span class="f-label !w-16 text-gray-600">Từ Giờ</span><input type="text" value="22:00:00" class="f-input center flex-1 font-bold text-blue-700"></div>
                 <div class="f-row"><span class="f-label !w-16 text-gray-600">Đến Giờ</span><input type="text" value="23:59:59" class="f-input center flex-1 font-bold text-blue-700"></div>
-                <div class="f-row"><span class="f-label !w-16 text-gray-400">Giá XĐ</span><input type="text" value="0" class="f-input right flex-1 text-gray-400"></div>
+                <div class="text-[9px] italic text-gray-400 mt-4 leading-tight">* Khung giờ đêm tính từ 22h00</div>
             </div>
-        </div>
-        <!-- Giá Ngày & Giá Tiền XS/TG Múi 2 -->
-        <div class="grid grid-cols-2 gap-3 border-l border-gray-200 pl-3">
-             <div class="space-y-2">
+
+            <!-- Cột 4: Giá Tiền Múi 2 -->
+            <div class="space-y-2 border-r border-gray-200 pr-3">
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">Giá Tiền XS</span><input type="text" value="10000" class="f-input right font-bold flex-1 text-red-600 border-red-200 bg-red-50"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">Giá Tiền TG</span><input type="text" value="10000" class="f-input right font-bold flex-1 text-red-600 border-red-200 bg-red-50"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-400">Giá Tiền XĐ</span><input type="text" value="0" class="f-input right flex-1 text-gray-400"></div>
             </div>
-            <div class="space-y-2 border-l border-gray-200 pl-3">
+
+            <!-- Cột 5: Giá Ngày -->
+            <div class="space-y-2">
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">1 Ngày XS</span><input type="text" value="15000" class="f-input right font-bold flex-1 text-gray-800"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-700">1 Ngày TG</span><input type="text" value="15000" class="f-input right font-bold flex-1 text-gray-800"></div>
                 <div class="f-row"><span class="f-label !w-20 text-gray-400">1 Ngày XĐ</span><input type="text" value="0" class="f-input right flex-1 text-gray-400"></div>
             </div>
+        </div>
+        <div class="mt-2 text-[9px] text-gray-400 italic text-center border-t border-gray-200 pt-1">
+            (thời gian miễn phí tính bằng giây, vui lòng nhập vào số giây)
         </div>
     </div>
 
@@ -90,57 +94,126 @@
         <div class="f-row justify-end pr-4"><span class="f-label !w-auto text-[#1E429F] font-bold mr-2">Giá qua đêm (tính từ 0h):</span><input type="text" class="f-input right !w-32 font-black text-red-600 border-red-200 bg-red-50"></div>
     </div>
 
-    <!-- Tính tiền theo ngày / Nhiều loại xe -->
+    <!-- Tính tiền theo ngày (Trọn gói) -->
     <div class="bg-gray-100 p-3 mb-3 rounded border border-gray-300 shadow-sm relative mt-5">
-        <span class="absolute -top-3 left-2 bg-gray-600 text-white text-[10px] font-bold px-3 py-0.5 rounded shadow-sm">TÙY CHỌN NÂNG CAO</span>
-        <div class="grid grid-cols-2 gap-4 mb-2">
-            <div class="flex items-center gap-2 bg-white p-1.5 rounded border border-gray-200">
-                <label class="check-box font-bold !mb-0 text-gray-700 cursor-pointer"><input type="checkbox" class="accent-gray-600"><span>Tính tiền theo ngày</span></label>
-                <div class="f-row ml-auto"><span class="f-label !w-auto mr-2">Giá trọn gói:</span><input type="text" value="15000" class="f-input right !w-28 font-bold text-gray-800"></div>
-            </div>
-            <label class="check-box font-bold !mb-0 bg-white p-1.5 rounded border border-gray-200 cursor-pointer text-gray-700 flex items-center"><input type="checkbox" class="accent-gray-600"><span>Tính tiền nhiều loại vé ô tô</span></label>
+        <span class="absolute -top-3 left-2 bg-gray-600 text-white text-[10px] font-bold px-3 py-0.5 rounded shadow-sm uppercase">1. Tính tiền theo ngày</span>
+        <div class="flex items-center gap-4 bg-white p-2 rounded border border-gray-200">
+            <label class="check-box font-bold !mb-0 text-gray-700 cursor-pointer flex-shrink-0"><input type="checkbox" class="accent-gray-600"><span>Kích hoạt tính tiền trọn gói theo ngày</span></label>
+            <div class="h-6 w-[1px] bg-gray-300 mx-2"></div>
+            <div class="f-row flex-1"><span class="f-label !w-auto mr-2 text-gray-600 font-bold">Giá trọn gói (VNĐ):</span><input type="text" value="15000" class="f-input right !w-40 font-black text-gray-800 text-[13px]"></div>
+            <div class="text-[9px] italic text-gray-400 ml-auto">* Áp dụng khi xe gửi quá 24h hoặc theo quy định ngày</div>
         </div>
-        <div class="grid grid-cols-3 gap-4 pt-2 border-t border-dashed border-gray-300">
-            <div class="bg-white p-2 rounded border border-gray-200 space-y-2">
-                <label class="check-box text-[10px] font-bold text-blue-800"><input type="checkbox" class="accent-blue-800"><span>Tính tiền theo loại vé</span></label>
-                <div class="f-row"><span class="f-label !w-16 text-blue-800">Số tiếng</span><input type="text" value="1" class="f-input center !w-12 font-bold"><span class="text-[9px] italic ml-1 text-gray-400">(0 = tính ngày)</span></div>
-                <div class="f-row"><span class="f-label !w-24 text-blue-800">Đêm TG</span><input type="text" class="f-input right flex-1 font-bold text-gray-700"></div>
-                <div class="f-row"><span class="f-label !w-24 text-blue-800">Đêm XS</span><input type="text" class="f-input right flex-1 font-bold text-gray-700"></div>
+    </div>
+
+    <!-- Tính tiền theo loại vé (Chi tiết phương tiện) -->
+    <div class="bg-slate-100 p-3 mb-3 rounded border border-slate-300 shadow-sm relative mt-5">
+        <span class="absolute -top-3 left-2 bg-slate-700 text-white text-[10px] font-bold px-3 py-0.5 rounded shadow-sm uppercase">2. Tính tiền theo loại vé & Phương tiện</span>
+        <div class="grid grid-cols-3 gap-4">
+            <!-- Cột 1: Quy tắc & Đêm -->
+            <div class="bg-white p-2 rounded border border-slate-200 space-y-2 shadow-sm">
+                <label class="check-box text-[10px] font-bold text-slate-800"><input type="checkbox" class="accent-slate-800"><span>Bật tính năng theo loại vé</span></label>
+                <div class="f-row"><span class="f-label !w-20 text-slate-800">Số tiếng min:</span><input type="text" value="1" class="f-input center !w-12 font-bold text-slate-700"><span class="text-[8px] italic ml-1 text-slate-400">(0 = tính ngày)</span></div>
+                <div class="pt-1 border-t border-slate-100">
+                    <div class="f-row"><span class="f-label !w-24 text-blue-800 font-bold">Tiền đêm TG:</span><input type="text" class="f-input right flex-1 font-bold text-gray-700 border-blue-100 bg-blue-50/30"></div>
+                    <div class="f-row"><span class="f-label !w-24 text-blue-800 font-bold">Tiền đêm XS:</span><input type="text" class="f-input right flex-1 font-bold text-gray-700 border-blue-100 bg-blue-50/30"></div>
+                </div>
             </div>
-            <div class="bg-white p-2 rounded border border-gray-200 space-y-2 flex flex-col justify-center">
-                <div class="f-row"><span class="f-label !w-20 text-blue-800">Tiền xe máy</span><input type="text" class="f-input right flex-1 font-bold text-gray-700"></div>
-                <div class="f-row"><span class="f-label !w-20 text-blue-800">Tiền xe đạp</span><input type="text" class="f-input right flex-1 font-bold text-gray-700"></div>
+            <!-- Cột 2: Xe máy & Xe đạp -->
+            <div class="bg-white p-2 rounded border border-slate-200 space-y-2 shadow-sm flex flex-col justify-center">
+                <div class="f-row"><span class="f-label !w-20 text-indigo-800 font-bold">Giá Xe Máy:</span><input type="text" class="f-input right flex-1 font-black text-gray-800 border-indigo-100 bg-indigo-50/30"></div>
+                <div class="f-row"><span class="f-label !w-20 text-indigo-800 font-bold">Giá Xe Đạp:</span><input type="text" class="f-input right flex-1 font-black text-gray-800 border-indigo-100 bg-indigo-50/30"></div>
             </div>
-            <div class="bg-white p-2 rounded border border-gray-200 space-y-2">
-                <div class="f-row"><span class="f-label !w-24 text-blue-800">Giờ xe hơi</span><input type="text" value="1" class="f-input center !w-12 font-bold"></div>
-                <div class="f-row"><span class="f-label !w-24 text-red-700 font-bold">Giá Hơi</span><input type="text" class="f-input right flex-1 font-black text-red-600 border-red-100 bg-red-50"></div>
-                <div class="f-row"><span class="f-label !w-24 text-red-700 font-bold">Giá Tay Ga</span><input type="text" class="f-input right flex-1 font-black text-red-600 border-red-100 bg-red-50"></div>
+            <!-- Cột 3: Xe hơi & Tay ga -->
+            <div class="bg-white p-2 rounded border border-slate-200 space-y-2 shadow-sm">
+                <div class="f-row"><span class="f-label !w-24 text-slate-800 font-bold">Giờ Xe Hơi:</span><input type="text" value="1" class="f-input center !w-12 font-bold text-slate-700"></div>
+                <div class="pt-1 border-t border-slate-100">
+                    <div class="f-row"><span class="f-label !w-24 text-red-700 font-bold">Giá Xe Hơi:</span><input type="text" class="f-input right flex-1 font-black text-red-600 border-red-100 bg-red-50"></div>
+                    <div class="f-row"><span class="f-label !w-24 text-red-700 font-bold">Giá Tay Ga:</span><input type="text" class="f-input right flex-1 font-black text-red-600 border-red-100 bg-red-50"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Tính tiền theo giờ (Bậc thang) -->
-    <div class="bg-indigo-50 p-3 rounded border border-indigo-200 shadow-sm relative mt-5">
-        <span class="absolute -top-3 left-2 bg-indigo-600 text-white text-[10px] font-bold px-3 py-0.5 rounded shadow-sm">LŨY TIẾN BẬC THANG</span>
-        <label class="check-box mb-2 text-[10px] font-bold text-indigo-900 cursor-pointer"><input type="checkbox" class="accent-indigo-600"><span>Kích hoạt tính lũy tiến (Bậc 1 < Bậc 2 < Bậc 3)</span></label>
-        <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white p-2 border border-indigo-200 rounded relative shadow-sm">
-                <span class="absolute right-0 top-0 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-bl">BẬC 1</span>
-                <div class="f-row mt-1"><span class="f-label !w-16 text-indigo-800">Số giờ <</span><input type="text" class="f-input center !w-16 font-bold text-indigo-700 border-indigo-200 bg-indigo-50"></div>
-                <div class="f-row mt-2"><span class="f-label !w-20 text-gray-600">Giá Xe Số</span><input type="text" class="f-input right flex-1 font-bold"></div>
-                <div class="f-row mt-1"><span class="f-label !w-20 text-gray-600">Giá Xe TG</span><input type="text" class="f-input right flex-1 font-bold"></div>
+    <!-- Tính tiền theo giờ (Lũy tiến bậc thang) -->
+    <div class="bg-emerald-50/50 p-4 rounded-lg border border-emerald-200 shadow-sm relative mt-8">
+        <div class="absolute -top-4 left-4 flex items-center gap-2">
+            <span class="bg-emerald-600 text-white text-[11px] font-black px-4 py-1 rounded-full shadow-md uppercase tracking-wider">
+                <i class="fas fa-chart-line mr-2"></i>4. Lũy tiến bậc thang theo giờ
+            </span>
+        </div>
+        
+        <div class="flex items-center justify-between mb-4 mt-2">
+            <label class="check-box font-bold text-emerald-900 cursor-pointer flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-emerald-100 shadow-sm">
+                <input type="checkbox" class="w-4 h-4 accent-emerald-600">
+                <span class="text-[11px]">Kích hoạt tính toán giá theo bậc (Lũy tiến thời gian)</span>
+            </label>
+            <span class="text-[10px] italic text-emerald-600 font-medium bg-emerald-100/50 px-2 py-0.5 rounded">
+                * Quy tắc: Bậc 1 &lt; Bậc 2 &lt; Bậc 3 (Ưu tiên tính theo mốc giờ cao nhất)
+            </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+            <!-- BẬC 1 -->
+            <div class="bg-white p-3 border border-emerald-200 rounded-lg relative shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between border-b border-emerald-50 pb-2 mb-3">
+                    <span class="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Bậc 1</span>
+                    <i class="fas fa-clock text-blue-200"></i>
+                </div>
+                <div class="space-y-3">
+                    <div class="f-row justify-between bg-blue-50/30 p-1.5 rounded border border-blue-100/50">
+                        <span class="f-label !w-auto text-blue-800 font-bold">Nếu số giờ &lt;</span>
+                        <div class="flex items-center">
+                            <input type="text" class="f-input center !w-14 font-black text-blue-700 border-blue-200 focus:ring-2 focus:ring-blue-100">
+                            <span class="text-[10px] font-bold text-blue-400 ml-1">H</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe Số:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe TG:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-2 border border-indigo-200 rounded relative shadow-sm">
-                <span class="absolute right-0 top-0 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-bl">BẬC 2</span>
-                <div class="f-row mt-1"><span class="f-label !w-16 text-indigo-800">Số giờ <</span><input type="text" class="f-input center !w-16 font-bold text-indigo-700 border-indigo-200 bg-indigo-50"></div>
-                <div class="f-row mt-2"><span class="f-label !w-20 text-gray-600">Giá Xe Số</span><input type="text" class="f-input right flex-1 font-bold"></div>
-                <div class="f-row mt-1"><span class="f-label !w-20 text-gray-600">Giá Xe TG</span><input type="text" class="f-input right flex-1 font-bold"></div>
+
+            <!-- BẬC 2 -->
+            <div class="bg-white p-3 border border-emerald-200 rounded-lg relative shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between border-b border-emerald-50 pb-2 mb-3">
+                    <span class="bg-orange-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Bậc 2</span>
+                    <i class="fas fa-clock text-orange-200"></i>
+                </div>
+                <div class="space-y-3">
+                    <div class="f-row justify-between bg-orange-50/30 p-1.5 rounded border border-orange-100/50">
+                        <span class="f-label !w-auto text-orange-800 font-bold">Nếu số giờ &lt;</span>
+                        <div class="flex items-center">
+                            <input type="text" class="f-input center !w-14 font-black text-orange-700 border-orange-200 focus:ring-2 focus:ring-orange-100">
+                            <span class="text-[10px] font-bold text-orange-400 ml-1">H</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe Số:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe TG:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-2 border border-indigo-200 rounded relative shadow-sm">
-                <span class="absolute right-0 top-0 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-bl">BẬC 3</span>
-                <div class="f-row mt-1"><span class="f-label !w-16 text-indigo-800">Số giờ <</span><input type="text" class="f-input center !w-16 font-bold text-indigo-700 border-indigo-200 bg-indigo-50"></div>
-                <div class="f-row mt-2"><span class="f-label !w-20 text-gray-600">Giá Xe Số</span><input type="text" class="f-input right flex-1 font-bold"></div>
-                <div class="f-row mt-1"><span class="f-label !w-20 text-gray-600">Giá Xe TG</span><input type="text" class="f-input right flex-1 font-bold"></div>
+
+            <!-- BẬC 3 -->
+            <div class="bg-white p-3 border border-emerald-200 rounded-lg relative shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between border-b border-emerald-50 pb-2 mb-3">
+                    <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Bậc 3</span>
+                    <i class="fas fa-clock text-red-200"></i>
+                </div>
+                <div class="space-y-3">
+                    <div class="f-row justify-between bg-red-50/30 p-1.5 rounded border border-red-100/50">
+                        <span class="f-label !w-auto text-red-800 font-bold">Nếu số giờ &gt;</span>
+                        <div class="flex items-center">
+                            <input type="text" class="f-input center !w-14 font-black text-red-700 border-red-200 focus:ring-2 focus:ring-red-100">
+                            <span class="text-[10px] font-bold text-red-400 ml-1">H</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe Số:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                        <div class="f-row"><span class="f-label !w-24 text-gray-600">Giá Xe TG:</span><input type="text" class="f-input right flex-1 font-bold text-gray-800"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
