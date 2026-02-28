@@ -3,224 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kha-Parking | Giám sát Làn xe</title>
+    <title>KHA-PARKING | Bảng Điều Khiển Giám Sát</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .camera-box { background: #1a202c; border: 2px solid #2d3748; position: relative; overflow: hidden; }
-        .camera-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
-        .plate-box { background: #2d3748; color: #48bb78; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 24px; text-align: center; }
-        .btn-action { background: #108042; transition: all 0.3s; }
-        .btn-action:hover { background: #0c6333; transform: scale(1.05); }
+        :root {
+            --primary-blue: #0B3D91;
+            --bg-light: #F0F2F5;
+            --panel-white: #FFFFFF;
+            --border-light: #D1D5DB;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --accent-green: #059669;
+            --accent-red: #DC2626;
+            --accent-blue: #2563EB;
+            --accent-orange: #EA580C;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Utility: Scaling Fonts */
+        .text-plate { font-size: clamp(14px, 1.4vw, 28px); font-weight: 900; font-family: 'Courier New', monospace; line-height: 1; }
+        .text-clock { font-size: clamp(16px, 1.4vw, 24px); font-weight: 700; font-family: 'Courier New', monospace; }
+        .text-label { font-size: clamp(8px, 0.55vw, 10px); text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 800; }
+        .text-value { font-size: clamp(11px, 0.85vw, 15px); font-weight: 700; color: var(--text-dark); }
+
+        /* Header Layout */
+        header {
+            height: 7vh;
+            min-height: 50px;
+            background: linear-gradient(to bottom, #FFFFFF, #F9FAFB);
+            border-bottom: 3px solid var(--primary-blue);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            align-items: center;
+            padding: 0 15px;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .stat-group {
+            background: #F3F4F6;
+            border: 1px solid var(--border-light);
+            padding: 4px 15px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stat-item { display: flex; align-items: center; gap: 8px; }
+        .stat-divider { width: 1px; height: 12px; background: var(--border-light); }
+
+        /* Main Body */
+        .dashboard-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            padding: 6px;
+            overflow: hidden;
+        }
+
+        .lane-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .media-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            flex: 1; 
+            min-height: 0;
+        }
+
+        .camera-placeholder {
+            background-color: #E5E7EB;
+            border: 1px solid var(--border-light);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .cam-tag {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(255,255,255,0.9);
+            color: var(--primary-blue);
+            font-size: 8px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-left: 3px solid var(--primary-blue);
+            z-index: 10;
+            border-radius: 2px;
+        }
+
+        /* Info Area */
+        .lane-info-grid {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            gap: 6px;
+            height: 18vh;
+            min-height: 160px;
+            flex-shrink: 0;
+        }
+
+        .ai-column {
+            background: var(--panel-white);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .ai-upper-part {
+            flex: 1;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 0;
+        }
+
+        .ai-lower-part {
+            height: 50px; 
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between; /* Horizontal layout */
+            align-items: center;
+            background: #F9FAFB;
+            padding: 0 12px;
+            flex-shrink: 0;
+        }
+
+        .data-column {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            height: 100%;
+        }
+
+        .info-table {
+            flex: 1;
+            background: var(--panel-white);
+            border: 1px solid var(--border-light);
+            display: grid;
+            grid-template-rows: repeat(4, 1fr);
+            padding: 2px 15px;
+            border-radius: 4px;
+            min-height: 0;
+        }
+
+        .fee-panel {
+            height: 50px;
+            background: var(--panel-white);
+            border: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #F3F4F6;
+            gap: 15px;
+            min-height: 0;
+        }
+        .info-row:last-child { border: none; }
+
+        .plate-img-frame {
+            height: 100%;
+            width: 100%;
+            background: #F3F4F6;
+            border: 1px dashed var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: #9CA3AF;
+            font-weight: bold;
+            border-radius: 2px;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 4.5vh;
+            min-height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: clamp(13px, 1.1vw, 18px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .bg-waiting { background-color: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
+        .bg-success { background-color: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+        .bg-error { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans leading-normal tracking-normal h-screen flex flex-col">
+<body>
 
-    <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center">
-        <div class="flex items-center space-x-4">
-            <h1 class="text-xl font-bold text-green-500 uppercase tracking-wider">
-                <i class="fas fa-parking mr-2"></i>Kha-Parking System
-            </h1>
-            <span class="bg-gray-700 px-3 py-1 rounded text-xs text-gray-400">Trạng thái: Sẵn sàng</span>
+    <header>
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-900 rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
+                <h1 class="text-base font-black tracking-widest text-blue-900">KHA-PARKING</h1>
+            </div>
+            <div class="h-4 w-[1px] bg-gray-300"></div>
+            <div class="flex items-center space-x-4">
+                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP</button>
+                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-cog"></i> CÀI ĐẶT</button>
+                <button class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-user-shield"></i> QUẢN TRỊ</button>
+            </div>
         </div>
-        <div class="flex space-x-2">
-            <button onclick="checkAdmin('settings')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm transition" title="Cấu hình">
-                <i class="fas fa-cog"></i>
-            </button>
-            <button onclick="checkAdmin('history')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm transition" title="Lịch sử">
-                <i class="fas fa-history"></i>
-            </button>
-            <button onclick="checkAdmin('statistics')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm transition" title="Thống kê">
-                <i class="fas fa-chart-line"></i>
-            </button>
-            <button onclick="checkAdmin('management')" class="btn-action text-white px-6 py-2 rounded text-sm font-semibold shadow-lg">
-                <i class="fas fa-user-shield mr-2"></i>Quản trị
-            </button>
+        <div class="text-center"><div id="clock" class="text-clock text-blue-700">10:15:20 - 28/02/2026</div></div>
+        <div class="flex justify-end">
+            <div class="stat-group">
+                <div class="stat-item"><span class="text-label">Doanh thu:</span><span class="text-value text-orange-600">1,250,000</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="text-label">Trong bãi:</span><span class="text-value text-green-600">142</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="text-label">Ngoài bãi:</span><span class="text-value text-blue-600">85</span></div>
+            </div>
         </div>
     </header>
 
-    <!-- Admin Login Modal -->
-    <div id="adminModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-        <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-2xl w-96">
-            <h2 class="text-xl font-bold mb-4 text-green-500 text-center uppercase tracking-widest">Xác nhận IT Admin</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-500 uppercase mb-1">Tên tài khoản</label>
-                    <input type="text" id="adminUser" class="w-full bg-gray-900 border border-gray-600 rounded p-2 focus:outline-none focus:border-green-500 text-center text-white font-bold">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-500 uppercase mb-1">Mật khẩu truy cập</label>
-                    <div class="relative">
-                        <input type="password" id="adminPass" class="w-full bg-gray-900 border border-gray-600 rounded p-2 focus:outline-none focus:border-green-500 text-center text-white font-bold pr-10">
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-2 text-gray-500 hover:text-white transition focus:outline-none">
-                            <i class="fas fa-eye" id="eyeIcon"></i>
-                        </button>
+    <div class="dashboard-body">
+        
+        <!-- LEFT LANE -->
+        <div class="lane-container">
+            <div class="media-section">
+                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP BIỂN SỐ — CAM 05</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP TOÀN CẢNH — CAM 06</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+            </div>
+
+            <div class="lane-info-grid">
+                <div class="ai-column">
+                    <div class="ai-upper-part">
+                        <div class="flex gap-1 h-full w-full">
+                            <div class="plate-img-frame">ẢNH VÀO</div>
+                            <div class="plate-img-frame">ẢNH RA</div>
+                        </div>
+                    </div>
+                    <div class="ai-lower-part">
+                        <div class="text-label">NHẬN DIỆN AI:</div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-plate text-blue-600">51-G1-77777</span>
+                            <span class="text-red-600 font-black text-xs">≠</span>
+                            <span class="text-plate text-red-600">51-G1-88888</span>
+                        </div>
+                        <div class="text-[8px] font-black text-red-800 bg-red-100 px-1 rounded uppercase">Sai biển số</div>
                     </div>
                 </div>
-                <div id="authError" class="hidden text-red-500 text-xs text-center py-1 font-bold">Sai thông tin đăng nhập!</div>
-                <div class="grid grid-cols-2 gap-4 pt-2">
-                    <button onclick="closeModal()" class="bg-gray-700 py-2 rounded hover:bg-gray-600 text-white">Hủy</button>
-                    <button onclick="verifyLogin()" class="bg-green-600 py-2 rounded hover:bg-green-700 font-bold text-white">Xác nhận</button>
+                <div class="data-column">
+                    <div class="info-table">
+                        <div class="info-row">
+                            <div class="info-item"><span class="text-label">Số thẻ:</span> <span class="text-value">UID-40291</span></div>
+                            <div class="info-item"><span class="text-label">Loại:</span> <span class="text-value text-blue-600">Xe Tháng</span></div>
+                            <div class="info-item"><span class="text-label">TG Gửi:</span> <span class="text-value">---</span></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item flex-1 truncate"><span class="text-label">Chủ xe:</span> <span class="text-value">NGUYỄN TRƯƠNG HOÀNG MINH TÂM</span></div>
+                            <div class="info-item"><span class="text-label">Biển số ĐK:</span> <span class="text-value text-orange-600">51-G1-77777</span></div>
+                        </div>
+                        <div class="info-row"><div class="info-item"><span class="text-label">Thời hạn:</span> <span class="text-value">01/03/2025 - 01/03/2030</span></div></div>
+                        <div class="info-row">
+                            <div class="info-item"><span class="text-label">Vào:</span> <span class="text-value">10:15:20 - 27/02/2026</span></div>
+                            <div class="info-item"><span class="text-label">Ra:</span> <span class="text-value text-blue-600">10:15:20 - 28/02/2026</span></div>
+                        </div>
+                    </div>
+                    <div class="fee-panel">
+                        <div class="text-label">THANH TOÁN (PHÍ LƯỢT):</div>
+                        <div class="flex items-baseline space-x-2"><div class="text-2xl font-black text-orange-600">25,000</div><div class="text-[9px] text-gray-500 font-bold">VNĐ</div></div>
+                    </div>
                 </div>
             </div>
+
+            <div class="media-section">
+                <div class="camera-placeholder"><span class="cam-tag">ẢNH CHỤP BIỂN SỐ</span><i class="fas fa-camera opacity-10 text-4xl"></i></div>
+                <div class="camera-placeholder"><span class="cam-tag">ẢNH CHỤP TOÀN CẢNH</span><i class="fas fa-camera opacity-10 text-4xl"></i></div>
+            </div>
+            <div class="status-bar bg-error"><i class="fas fa-exclamation-triangle mr-3"></i> SAI BIỂN SỐ - CẢNH BÁO</div>
         </div>
+
+        <!-- RIGHT LANE -->
+        <div class="lane-container">
+            <div class="media-section">
+                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP BIỂN SỐ — CAM 01</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP TOÀN CẢNH — CAM 02</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+            </div>
+
+            <div class="lane-info-grid">
+                <div class="ai-column">
+                    <div class="ai-upper-part">
+                        <div class="flex gap-1 h-full w-full">
+                            <div class="plate-img-frame">ẢNH VÀO</div>
+                            <div class="plate-img-frame opacity-30">ẢNH RA</div>
+                        </div>
+                    </div>
+                    <div class="ai-lower-part">
+                        <div class="text-label">NHẬN DIỆN AI:</div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-plate text-blue-600">64-H1-06910</span>
+                            <span class="text-green-600 font-black text-xs">✓</span>
+                            <span class="text-plate text-green-600">64-H1-06910</span>
+                        </div>
+                        <div class="text-[8px] font-black text-green-800 bg-green-100 px-1 rounded uppercase">Hợp lệ</div>
+                    </div>
+                </div>
+                <div class="data-column">
+                    <div class="info-table">
+                        <div class="info-row">
+                            <div class="info-item"><span class="text-label">Số thẻ:</span> <span class="text-value">UID-30291</span></div>
+                            <div class="info-item"><span class="text-label">Loại:</span> <span class="text-value text-blue-600">Xe Tháng</span></div>
+                            <div class="info-item"><span class="text-label">TG Gửi:</span> <span class="text-value">---</span></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item flex-1 truncate"><span class="text-label">Chủ xe:</span> <span class="text-value">LÊ MINH TÂM</span></div>
+                            <div class="info-item"><span class="text-label">Biển số ĐK:</span> <span class="text-value text-orange-600">64-H1-06910</span></div>
+                        </div>
+                        <div class="info-row"><div class="info-item"><span class="text-label">Thời hạn:</span> <span class="text-value">01/03/2025 - 01/03/2030</span></div></div>
+                        <div class="info-row">
+                            <div class="info-item"><span class="text-label">Vào:</span> <span class="text-value text-green-600">10:15:20 - 27/02/2026</span></div>
+                            <div class="info-item"><span class="text-label">Ra:</span> <span class="text-value">---</span></div>
+                        </div>
+                    </div>
+                    <div class="fee-panel">
+                        <div class="text-label">THANH TOÁN (PHÍ LƯỢT):</div>
+                        <div class="flex items-baseline space-x-2"><div class="text-2xl font-black text-gray-400">---</div><div class="text-[9px] text-gray-500 font-bold">VNĐ</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media-section">
+                <div class="camera-placeholder"><span class="cam-tag">ẢNH CHỤP BIỂN SỐ</span><i class="fas fa-camera opacity-10 text-4xl"></i></div>
+                <div class="camera-placeholder"><span class="cam-tag">ẢNH CHỤP TOÀN CẢNH</span><i class="fas fa-camera opacity-10 text-4xl"></i></div>
+            </div>
+            <div class="status-bar bg-success"><i class="fas fa-check-circle mr-3"></i> MỜI XE VÀO BÃI</div>
+        </div>
+
     </div>
 
-    <!-- Script for Admin Access -->
     <script>
-        let targetRoute = '';
-        
-        function checkAdmin(feature) {
-            targetRoute = feature;
-            document.getElementById('adminModal').classList.remove('hidden');
-            document.getElementById('adminUser').focus();
+        function updateClock() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const y = now.getFullYear();
+            const h = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').innerText = h + ":" + min + ":" + s + " - " + d + "/" + m + "/" + y;
         }
-
-        function closeModal() {
-            document.getElementById('adminModal').classList.add('hidden');
-            document.getElementById('adminUser').value = '';
-            document.getElementById('adminPass').value = '';
-            document.getElementById('adminPass').type = 'password';
-            document.getElementById('eyeIcon').classList.remove('fa-eye-slash');
-            document.getElementById('eyeIcon').classList.add('fa-eye');
-            document.getElementById('authError').classList.add('hidden');
-        }
-
-        function togglePassword() {
-            const passInput = document.getElementById('adminPass');
-            const icon = document.getElementById('eyeIcon');
-            
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        function verifyLogin() {
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
-            
-            // Tài khoản mặc định cho IT
-            if (user === 'ITKHA' && pass === '0310341786') {
-                window.location.href = `/admin/${targetRoute}`;
-            } else {
-                document.getElementById('authError').classList.remove('hidden');
-                document.getElementById('adminPass').value = '';
-            }
-        }
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
-
-    <!-- Main Content -->
-    <main class="flex-grow p-4 grid grid-cols-12 gap-4 overflow-hidden">
-        
-        <!-- Left: Camera Views (2 Làn x 2 Camera) -->
-        <div class="col-span-12 lg:col-span-8 grid grid-cols-2 grid-rows-2 gap-3 h-full">
-            <div class="camera-box flex items-center justify-center rounded-lg shadow-inner group">
-                <span class="camera-label">Làn 1 - BIỂN SỐ (VÀO)</span>
-                <i class="fas fa-video text-gray-700 text-6xl opacity-20 group-hover:opacity-40 transition"></i>
-                <div class="absolute bottom-4 left-4 right-4 plate-box py-2 rounded border border-gray-600 shadow-xl">
-                    51F-123.45
-                </div>
-            </div>
-            <div class="camera-box flex items-center justify-center rounded-lg shadow-inner group">
-                <span class="camera-label">Làn 1 - TOÀN CẢNH (VÀO)</span>
-                <i class="fas fa-video text-gray-700 text-6xl opacity-20 group-hover:opacity-40 transition"></i>
-            </div>
-            <div class="camera-box flex items-center justify-center rounded-lg shadow-inner group">
-                <span class="camera-label">Làn 2 - BIỂN SỐ (RA)</span>
-                <i class="fas fa-video text-gray-700 text-6xl opacity-20 group-hover:opacity-40 transition"></i>
-                <div class="absolute bottom-4 left-4 right-4 plate-box py-2 rounded border border-gray-600 shadow-xl text-yellow-500">
-                    -- WAITING --
-                </div>
-            </div>
-            <div class="camera-box flex items-center justify-center rounded-lg shadow-inner group">
-                <span class="camera-label">Làn 2 - TOÀN CẢNH (RA)</span>
-                <i class="fas fa-video text-gray-700 text-6xl opacity-20 group-hover:opacity-40 transition"></i>
-            </div>
-        </div>
-
-        <!-- Right: Control Panel & Card Info -->
-        <div class="col-span-12 lg:col-span-4 flex flex-col space-y-4 h-full overflow-y-auto pr-1">
-            
-            <!-- Card Scan Section -->
-            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg">
-                <h3 class="text-sm font-semibold text-gray-400 uppercase mb-4 tracking-widest">Quẹt thẻ / Nhập thẻ</h3>
-                <div class="relative">
-                    <input type="text" placeholder="ID Thẻ (UID)..." class="w-full bg-gray-900 border border-gray-600 rounded-lg py-3 px-4 focus:outline-none focus:border-green-500 text-2xl text-center placeholder-gray-700">
-                    <i class="fas fa-id-card absolute right-4 top-4 text-gray-600"></i>
-                </div>
-                <div class="grid grid-cols-2 gap-3 mt-4">
-                    <button class="bg-green-600 hover:bg-green-700 py-3 rounded font-bold uppercase tracking-widest transition">Cho xe VÀO</button>
-                    <button class="bg-blue-600 hover:bg-blue-700 py-3 rounded font-bold uppercase tracking-widest transition">Cho xe RA</button>
-                </div>
-            </div>
-
-            <!-- Vehicle Detail -->
-            <div class="bg-gray-800 p-5 rounded-lg border border-gray-700 flex-grow shadow-lg">
-                <h3 class="text-sm font-semibold text-gray-400 uppercase mb-4 tracking-widest border-b border-gray-700 pb-2">Thông tin xe</h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between border-b border-gray-700 py-2">
-                        <span class="text-gray-500">Mã thẻ:</span>
-                        <span class="font-mono text-green-400">0012345678</span>
-                    </div>
-                    <div class="flex justify-between border-b border-gray-700 py-2">
-                        <span class="text-gray-500">Biển số cũ:</span>
-                        <span class="font-bold">51G-888.88</span>
-                    </div>
-                    <div class="flex justify-between border-b border-gray-700 py-2">
-                        <span class="text-gray-500">Giờ vào:</span>
-                        <span>27/02 08:30</span>
-                    </div>
-                    <div class="flex justify-between border-b border-gray-700 py-2">
-                        <span class="text-gray-500">Phí dịch vụ:</span>
-                        <span class="text-yellow-400 font-bold">5.000 VNĐ</span>
-                    </div>
-                </div>
-                
-                <div class="mt-6 flex flex-col space-y-2">
-                    <button class="bg-gray-700 hover:bg-gray-600 py-2 rounded text-sm transition">Mở Barie (Khẩn cấp)</button>
-                    <button class="bg-red-900 hover:bg-red-800 py-2 rounded text-sm transition text-red-200 uppercase font-bold text-xs">Cảnh báo / Chặn thẻ</button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer: Recent Transactions -->
-    <footer class="bg-gray-800 p-2 h-32 border-t border-gray-700 overflow-hidden">
-        <table class="w-full text-left text-xs">
-            <thead class="text-gray-500 uppercase border-b border-gray-700">
-                <tr>
-                    <th class="py-2 px-4">Giờ</th>
-                    <th class="py-2 px-4">Biển số</th>
-                    <th class="py-2 px-4">Làn</th>
-                    <th class="py-2 px-4">Loại xe</th>
-                    <th class="py-2 px-4">Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-700">
-                <tr class="hover:bg-gray-750 transition cursor-pointer">
-                    <td class="py-2 px-4">18:50:22</td>
-                    <td class="py-2 px-4 font-bold text-green-400">51F-123.45</td>
-                    <td class="py-2 px-4 text-blue-300">LÀN 1 VÀO</td>
-                    <td class="py-2 px-4">Xe Máy</td>
-                    <td class="py-2 px-4 italic text-gray-500">Đã lưu...</td>
-                </tr>
-                <tr class="hover:bg-gray-750 transition cursor-pointer">
-                    <td class="py-2 px-4">18:48:10</td>
-                    <td class="py-2 px-4 font-bold">59K-999.99</td>
-                    <td class="py-2 px-4 text-orange-300">LÀN 2 RA</td>
-                    <td class="py-2 px-4">Ô tô</td>
-                    <td class="py-2 px-4 font-bold text-yellow-500">CHỜ THANH TOÁN</td>
-                </tr>
-            </tbody>
-        </table>
-    </footer>
-
 </body>
 </html>
