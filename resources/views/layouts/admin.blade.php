@@ -70,7 +70,7 @@
             <div id="global-clock" class="text-clock">10:15:20 - 28/02/2026</div>
         </div>
 
-        <div class="flex justify-end">
+        <div class="flex justify-end items-center gap-3">
             <div class="stat-group">
                 <div class="stat-item"><span class="text-label">Doanh thu:</span><span class="text-value text-orange-600">1,250,000</span></div>
                 <div class="stat-divider"></div>
@@ -78,6 +78,9 @@
                 <div class="stat-divider"></div>
                 <div class="stat-item"><span class="text-label">Ngoài bãi:</span><span class="text-value text-blue-600">85</span></div>
             </div>
+            <button onclick="toggleFullScreen()" class="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded shadow-sm hover:text-[#108042] hover:border-[#108042] transition-all text-gray-500" title="Toàn màn hình">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </button>
         </div>
     </header>
 
@@ -86,6 +89,15 @@
     </main>
 
     <script>
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
         function updateGlobalClock() {
             const now = new Date();
             const d = String(now.getDate()).padStart(2, '0');

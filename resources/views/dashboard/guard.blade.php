@@ -247,13 +247,21 @@
             </div>
         </div>
         <div class="text-center"><div id="clock" class="text-clock text-[#108042]">10:15:20 - 28/02/2026</div></div>
-        <div class="flex justify-end">
+        <div class="flex justify-end items-center gap-3">
             <div class="stat-group">
                 <div class="stat-item"><span class="text-label">Doanh thu:</span><span class="text-value text-orange-600">1,250,000</span></div>
                 <div class="stat-divider"></div>
                 <div class="stat-item"><span class="text-label">Trong bãi:</span><span class="text-value text-green-600">142</span></div>
                 <div class="stat-divider"></div>
                 <div class="stat-item"><span class="text-label">Ngoài bãi:</span><span class="text-value text-blue-600">85</span></div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleFullScreen()" class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-[#108042] hover:border-[#108042] transition-all shadow-sm" title="Toàn màn hình">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <a href="{{ route('admin.management') }}" class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-[#108042] hover:border-[#108042] transition-all shadow-sm" title="Cài đặt quản trị">
+                    <i class="fas fa-cog"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -435,6 +443,17 @@
             const s = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('clock').innerText = h + ":" + min + ":" + s + " - " + d + "/" + m + "/" + y;
         }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
         setInterval(updateClock, 1000);
         updateClock();
     </script>

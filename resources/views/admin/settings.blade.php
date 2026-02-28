@@ -76,7 +76,7 @@
 
     <!-- GLOBAL FOOTER -->
     <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 10px 15px; background: #E1E1E1; border-top: 1px solid #999; flex-shrink: 0;">
-        <button class="btn-action px-10">Thoát</button>
+        <button onclick="window.location.href='{{ route('dashboard.guard') }}'" class="btn-action px-10 hover:bg-gray-200 transition-colors">Thoát</button>
         <button class="btn-action btn-blue px-12 font-bold">Lưu Toàn Bộ Cài Đặt</button>
     </div>
 </div>
