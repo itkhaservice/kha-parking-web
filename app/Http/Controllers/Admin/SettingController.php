@@ -69,6 +69,36 @@ class SettingController extends Controller
     }
 
     /**
+     * Test if a COM port exists on the system (Windows only)
+     */
+    public function testComPort(Request $request)
+    {
+        $comName = strtoupper($request->input('com_name'));
+        
+        if (str_starts_with(PHP_OS, 'WIN')) {
+            // Lệnh PowerShell để lấy danh sách cổng COM đang hoạt động
+            $command = 'powershell.exe -NoProfile -Command "[System.IO.Ports.SerialPort]::getportnames()"';
+            exec($command, $output, $returnVar);
+            
+            $availablePorts = array_map('strtoupper', array_map('trim', $output));
+            
+            if (in_array($comName, $availablePorts)) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "TÍN HIỆU TỐT: Cổng [$comName] đang sẵn sàng!"
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => "LỖI: Cổng [$comName] chưa kết nối! Hiện có: " . (implode(', ', $availablePorts) ?: 'Không có cổng nào')
+                ]);
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => 'Tính năng này chỉ hỗ trợ trên Windows.']);
+    }
+
+    /**
      * Save all settings to database
      */
     public function saveSettings(Request $request)
@@ -79,7 +109,6 @@ class SettingController extends Controller
             DB::beginTransaction();
             
             foreach ($configs as $key => $value) {
-                // Chỉ lưu các key hợp lệ, tránh CSRF token
                 if ($key === '_token') continue;
 
                 DB::table('settings')->updateOrInsert(

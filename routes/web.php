@@ -42,6 +42,7 @@ Route::middleware(['admin.it'])->prefix('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings');
     Route::post('/settings/save', [App\Http\Controllers\Admin\SettingController::class, 'saveSettings'])->name('admin.settings.save');
     Route::post('/settings/test-db', [App\Http\Controllers\Admin\SettingController::class, 'testDbConnection'])->name('admin.settings.test_db');
+    Route::post('/settings/test-com', [App\Http\Controllers\Admin\SettingController::class, 'testComPort'])->name('admin.settings.test_com');
 
     Route::get('/history', function () { return view('admin.history'); })->name('admin.history');
     Route::get('/statistics', function () { return view('admin.statistics'); })->name('admin.statistics');
