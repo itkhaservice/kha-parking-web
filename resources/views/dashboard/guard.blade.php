@@ -444,6 +444,49 @@
             document.getElementById('clock').innerText = h + ":" + min + ":" + s + " - " + d + "/" + m + "/" + y;
         }
 
+        // KEYBOARD SHORTCUTS SYSTEM
+        document.addEventListener('keydown', function(e) {
+            // F5: Refresh Page
+            if (e.key === 'F5') {
+                // Let browser handle or custom reload
+                // location.reload(); 
+            }
+
+            // F4: Quick Admin Login
+            if (e.key === 'F4') {
+                e.preventDefault();
+                checkAdmin('management');
+            }
+
+            // ESC: Close Modals
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+
+            // ENTER or SPACE: Confirm Action
+            if (e.key === 'Enter' || e.key === ' ') {
+                const adminModal = document.getElementById('adminModal');
+                if (!adminModal.classList.contains('hidden')) {
+                    e.preventDefault();
+                    verifyLogin();
+                } else {
+                    // Logic cho việc cho xe ra khi lấy tiền xong hoặc chấp nhận sai biển số
+                    handleConfirmExit();
+                }
+            }
+        });
+
+        function handleConfirmExit() {
+            // Đây là nơi xử lý khi bảo vệ nhấn Enter/Space để cho xe ra
+            // Tạm thời log ra console hoặc thay đổi trạng thái status bar
+            console.log('Phím tắt: Xác nhận cho xe ra / Đã thu tiền');
+            const statusBar = document.querySelector('.status-bar');
+            if (statusBar && statusBar.classList.contains('bg-error')) {
+                statusBar.innerHTML = '<i class="fas fa-check-circle mr-3"></i> ĐÃ XÁC NHẬN CHO RA (GHI ĐÈ AI)';
+                statusBar.className = 'status-bar bg-success';
+            }
+        }
+
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
