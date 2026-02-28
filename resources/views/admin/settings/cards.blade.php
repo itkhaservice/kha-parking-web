@@ -19,24 +19,23 @@
                                 </tr>
                             </thead>
                             <tbody id="card-type-list">
+                                @php
+                                    $cardTypes = json_decode($settings['card_types_json'] ?? '[]', true);
+                                    if (empty($cardTypes)) {
+                                        $cardTypes = [
+                                            ['code' => 'VT', 'name' => 'Vé tháng cư dân', 'is_charge' => '0'],
+                                            ['code' => 'VL', 'name' => 'Vé lượt vãng lai', 'is_charge' => '1']
+                                        ];
+                                    }
+                                @endphp
+                                @foreach($cardTypes as $card)
                                 <tr class="cursor-pointer hover:bg-green-50" onclick="editCardRow(this)">
-                                    <td class="font-black text-blue-700">VT</td>
-                                    <td class="font-bold">Vé tháng cư dân</td>
-                                    <td class="text-center font-black">0</td>
+                                    <td class="font-black text-blue-700">{{ $card['code'] }}</td>
+                                    <td class="font-bold">{{ $card['name'] }}</td>
+                                    <td class="text-center font-black {{ $card['is_charge'] == '1' ? 'text-red-600' : '' }}">{{ $card['is_charge'] }}</td>
                                     <td class="text-center"><button class="text-red-500 hover:text-red-700" onclick="deleteCardRow(this, event)"><i class="fas fa-trash-alt"></i></button></td>
                                 </tr>
-                                <tr class="cursor-pointer hover:bg-green-50" onclick="editCardRow(this)">
-                                    <td class="font-black text-blue-700">VT-XD</td>
-                                    <td class="font-bold">Vé tháng xe đạp</td>
-                                    <td class="text-center font-black">0</td>
-                                    <td class="text-center"><button class="text-red-500 hover:text-red-700" onclick="deleteCardRow(this, event)"><i class="fas fa-trash-alt"></i></button></td>
-                                </tr>
-                                <tr class="cursor-pointer hover:bg-green-50" onclick="editCardRow(this)">
-                                    <td class="font-black text-blue-700">VL</td>
-                                    <td class="font-bold">Vé lượt vãng lai</td>
-                                    <td class="text-center font-black text-red-600">1</td>
-                                    <td class="text-center"><button class="text-red-500 hover:text-red-700" onclick="deleteCardRow(this, event)"><i class="fas fa-trash-alt"></i></button></td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -72,27 +71,25 @@
                 <div class="grid grid-cols-2 gap-8">
                     <div class="space-y-3">
                         <label class="check-box bg-white p-3 border border-gray-200 rounded shadow-sm hover:border-[#108042] transition-all cursor-pointer">
-                            <input type="checkbox" name="card_limit_time" checked class="w-5 h-5 accent-[#108042]">
+                            <input type="checkbox" name="card_limit_time" value="1" {{ ($settings['card_limit_time'] ?? '1') == '1' ? 'checked' : '' }} class="w-5 h-5 accent-[#108042]">
                             <div class="ml-3">
                                 <div class="text-[11px] font-black text-gray-800 uppercase">Tính tiền vượt thời gian quy định</div>
                                 <div class="text-[9px] text-gray-500">Tự động áp dụng giá vé lượt khi vé tháng hết hạn hoặc gửi quá giờ.</div>
                             </div>
                         </label>
                         <label class="check-box bg-white p-3 border border-gray-200 rounded shadow-sm hover:border-[#108042] transition-all cursor-pointer">
-                            <input type="checkbox" name="card_auto_lock" class="w-5 h-5 accent-[#108042]">
+                            <input type="checkbox" name="card_auto_lock" value="1" {{ ($settings['card_auto_lock'] ?? '0') == '1' ? 'checked' : '' }} class="w-5 h-5 accent-[#108042]">
                             <div class="ml-3">
                                 <div class="text-[11px] font-black text-gray-800 uppercase">Tự động khóa thẻ sau 30 ngày không sử dụng</div>
                                 <div class="text-[9px] text-gray-500">Giúp bảo mật và dọn dẹp danh sách thẻ rác trong hệ thống.</div>
                             </div>
                         </label>
                     </div>
-                    
                     <div class="bg-blue-50 p-4 rounded border border-blue-100">
                         <div class="text-[10px] font-black text-blue-700 uppercase mb-2"><i class="fas fa-info-circle mr-1"></i> Quy tắc Thẻ hệ thống</div>
                         <p class="text-[10px] text-blue-800 leading-relaxed italic">
                             - <strong>Vé Tháng (VT):</strong> Không tính tiền tại làn, quản lý theo chu kỳ tháng. <br>
-                            - <strong>Vé Lượt (VL):</strong> Tính tiền trực tiếp khi xe ra dựa trên bảng giá. <br>
-                            - <strong>Ưu tiên:</strong> Các loại thẻ VIP/Nhân viên có thể cài đặt phí = 0.
+                            - <strong>Vé Lượt (VL):</strong> Tính tiền trực tiếp khi xe ra dựa trên bảng giá.
                         </p>
                     </div>
                 </div>
@@ -100,8 +97,7 @@
         </div>
     </div>
 
-    <!-- Nút lưu ẩn để JS thu thập dữ liệu danh sách -->
-    <input type="hidden" name="card_types_json" id="card_types_json">
+    <input type="hidden" name="card_types_json" id="card_types_json" value="{{ $settings['card_types_json'] ?? '' }}">
 
     <div class="mt-6 flex justify-end gap-3">
         <button onclick="window.location.href='{{ route('dashboard.guard') }}'" class="btn-action !h-10 px-8 font-black uppercase tracking-widest border-gray-400">THOÁT</button>
@@ -117,18 +113,13 @@
         document.getElementById('card_desc').value = '';
         document.getElementById('card_is_charge').checked = false;
         editingRow = null;
-        
-        // Reset row highlights
         document.querySelectorAll('#card-type-list tr').forEach(tr => tr.classList.remove('active', 'bg-green-50'));
     }
 
     function editCardRow(row) {
         editingRow = row;
-        
-        // Highlight row
         document.querySelectorAll('#card-type-list tr').forEach(tr => tr.classList.remove('active', 'bg-green-50'));
         row.classList.add('active', 'bg-green-50');
-
         const cells = row.getElementsByTagName('td');
         document.getElementById('card_code').value = cells[0].innerText;
         document.getElementById('card_desc').value = cells[1].innerText;
@@ -148,20 +139,15 @@
         const desc = document.getElementById('card_desc').value.trim();
         const isCharge = document.getElementById('card_is_charge').checked ? '1' : '0';
 
-        if(!code || !desc) {
-            alert('Vui lòng nhập đầy đủ Mã và Diễn giải!');
-            return;
-        }
+        if(!code || !desc) { alert('Vui lòng nhập đầy đủ Mã và Diễn giải!'); return; }
 
         if(editingRow) {
-            // Update
             const cells = editingRow.getElementsByTagName('td');
             cells[0].innerText = code;
             cells[1].innerText = desc;
             cells[2].innerText = isCharge;
             cells[2].className = isCharge === '1' ? 'text-center font-black text-red-600' : 'text-center font-black';
         } else {
-            // Add new
             const tbody = document.getElementById('card-type-list');
             const newRow = document.createElement('tr');
             newRow.className = 'cursor-pointer hover:bg-green-50';
@@ -174,7 +160,6 @@
             `;
             tbody.appendChild(newRow);
         }
-
         updateCardJson();
         clearCardForm();
     }
@@ -184,15 +169,10 @@
         const rows = document.querySelectorAll('#card-type-list tr');
         rows.forEach(row => {
             const cells = row.getElementsByTagName('td');
-            data.push({
-                code: cells[0].innerText,
-                name: cells[1].innerText,
-                is_charge: cells[2].innerText
-            });
+            if (cells.length >= 3) {
+                data.push({ code: cells[0].innerText, name: cells[1].innerText, is_charge: cells[2].innerText });
+            }
         });
         document.getElementById('card_types_json').value = JSON.stringify(data);
     }
-
-    // Khởi tạo JSON lần đầu
-    window.addEventListener('DOMContentLoaded', updateCardJson);
 </script>

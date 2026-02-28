@@ -39,7 +39,7 @@ Route::middleware(['admin.it'])->prefix('admin')->group(function () {
     Route::get('/management', function () { return view('admin.management'); })->name('admin.management');
     
     // Settings Routes
-    Route::get('/settings', function () { return view('admin.settings'); })->name('admin.settings');
+    Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings');
     Route::post('/settings/save', [App\Http\Controllers\Admin\SettingController::class, 'saveSettings'])->name('admin.settings.save');
     Route::post('/settings/test-db', [App\Http\Controllers\Admin\SettingController::class, 'testDbConnection'])->name('admin.settings.test_db');
 

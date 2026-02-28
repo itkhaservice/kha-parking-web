@@ -11,6 +11,17 @@ use Exception;
 class SettingController extends Controller
 {
     /**
+     * Display the settings page with loaded data
+     */
+    public function index()
+    {
+        // Lấy toàn bộ settings và pluck ra dạng [key => value]
+        $settings = DB::table('settings')->pluck('value', 'key')->all();
+        
+        return view('admin.settings', compact('settings'));
+    }
+
+    /**
      * Test connection to SQL Server with provided credentials
      */
     public function testDbConnection(Request $request)
