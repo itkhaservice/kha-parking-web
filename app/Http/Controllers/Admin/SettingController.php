@@ -20,14 +20,20 @@ class SettingController extends Controller
         $pass = $request->input('db_pass');
         $database = $request->input('db_name');
 
+        // Kiểm tra Driver trước khi thử kết nối
+        if (!in_array('sqlsrv', PDO::getAvailableDrivers())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: Máy chủ PHP chưa cài đặt Driver SQLSRV!'
+            ], 500);
+        }
+
         try {
-            // Thử kết nối bằng PDO SQLSRV hoặc DBLIB tùy hệ điều hành
-            $dsn = "sqlsrv:Server=$server;Database=$database;Encrypt=false;TrustServerCertificate=true";
+            // Thêm LoginTimeout vào DSN để báo lỗi nhanh
+            $dsn = "sqlsrv:Server=$server;Database=$database;LoginTimeout=5;Encrypt=false;TrustServerCertificate=true";
             
-            // Nếu là Windows dùng SQLSRV, nếu Linux thường dùng DBLIB (nhưng ở đây đang chạy Windows)
             $conn = new PDO($dsn, $user, $pass, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_TIMEOUT => 5 // Timeout 5 giây
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
 
             return response()->json([
@@ -35,10 +41,15 @@ class SettingController extends Controller
                 'message' => 'Kết nối SQL Server thành công!'
             ]);
         } catch (Exception $e) {
+            // Trả về thông báo lỗi ngắn gọn
+            $errorMsg = $e->getMessage();
+            if (str_contains($errorMsg, 'Login timeout expired')) {
+                $errorMsg = 'Lỗi: Không tìm thấy Server (Timeout 5s)';
+            }
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi kết nối: ' . $e->getMessage()
-            ], 500);
+                'message' => $errorMsg
+            ], 200); // Trả về 200 để JS xử lý thông báo đẹp
         }
     }
 

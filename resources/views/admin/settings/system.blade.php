@@ -9,7 +9,7 @@
                 <div class="space-y-3">
                     <div class="f-row bg-gray-50 p-2 rounded border border-gray-100">
                         <span class="f-label !w-32 text-gray-600 font-bold">Server Name:</span>
-                        <input type="text" value="DESKTOP-4P0F01E" class="f-input mono font-black flex-1 text-blue-700 border-blue-100 bg-white">
+                        <input type="text" id="db_server" value="DESKTOP-4P0F01E" class="f-input mono font-black flex-1 text-blue-700 border-blue-100 bg-white">
                         <label class="check-box ml-3 bg-[#108042]/10 px-2 py-1 rounded border border-[#108042]/20 cursor-pointer">
                             <input type="checkbox" checked class="accent-[#108042]">
                             <span class="text-[10px] font-black text-[#108042] uppercase ml-1">Kích hoạt</span>
