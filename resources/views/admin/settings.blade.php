@@ -304,14 +304,14 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('✓ Đã lưu toàn bộ cấu hình vào Database thành công!');
+                showToast('Đã lưu toàn bộ cấu hình vào Database thành công!');
             } else {
-                alert('✕ Lỗi: ' + data.message);
+                showToast('Lỗi: ' + data.message, 'error');
             }
         })
         .catch(error => {
             console.error('Save Error:', error);
-            alert('✕ Lỗi kết nối Server không thể lưu!');
+            showToast('Lỗi kết nối Server không thể lưu!', 'error');
         })
         .finally(() => {
             btn.disabled = false;

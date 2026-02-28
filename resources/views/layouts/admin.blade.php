@@ -54,10 +54,37 @@
 
         /* Content Area */
         main.admin-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-    </style>
-    </head>
-    <body>
 
+        /* TOAST NOTIFICATION */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast {
+            pointer-events: auto;
+            min-width: 300px;
+            background: white;
+            border-left: 6px solid #ccc;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+        .toast.success { border-left-color: #108042; }
+        .toast.error { border-left-color: #DC2626; }
+        .toast.info { border-left-color: #2563EB; }
+        .toast.hide { animation: slideOut 0.3s ease forwards; }
+        .toast-icon { font-size: 20px; }
+        .toast.success .toast-icon { color: #108042; }
+        .toast.error .toast-icon { color: #DC2626; }
+        .toast-msg { font-size: 13px; font-weight: 800; color: #1F2937; }
+
+        @keyframes slideIn { from { transform: translateX(110%); } to { transform: translateX(0); } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
+        </style>
+        </head>
+        <body>
+        <div id="toast-container"></div>
     <header class="main-header">
         <div class="flex items-center space-x-6">
             <div class="flex items-center space-x-3">
@@ -90,6 +117,19 @@
     </main>
 
     <script>
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-times-circle' : 'fa-info-circle');
+            toast.innerHTML = `<i class="fas ${icon} toast-icon"></i><div class="toast-msg">${message}</div>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
