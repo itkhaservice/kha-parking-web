@@ -19,7 +19,7 @@ Route::post('/admin-login', function (Request $request) {
     $pass = $request->input('pass');
     $target = $request->input('target', 'management');
 
-    if ($user === 'ITKHA' && $pass === '123ABC') {
+    if ($user === 'ITKHA' && $pass === '0310341786') {
         $request->session()->put('admin_it_logged_in', true);
         return response()->json(['success' => true, 'url' => route('admin.' . $target)]);
     }
