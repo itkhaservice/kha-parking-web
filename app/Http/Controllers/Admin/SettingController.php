@@ -30,8 +30,8 @@ class SettingController extends Controller
                 ]);
             }
 
-            // Bước 2: Thử tạo DSN (Ép dùng TCP/IP để ổn định hơn)
-            $dsn = "sqlsrv:Server=tcp:$server;Database=$database;LoginTimeout=5;Encrypt=false;TrustServerCertificate=true";
+            // Bước 2: Thử tạo DSN (Hỗ trợ Named Instance như Server\SQLEXPRESS)
+            $dsn = "sqlsrv:Server=$server;Database=$database;LoginTimeout=5;Encrypt=false;TrustServerCertificate=true";
             
             // Bước 3: Thử kết nối thực tế
             $conn = new PDO($dsn, $user, $pass, [

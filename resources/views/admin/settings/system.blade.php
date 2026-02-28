@@ -9,7 +9,7 @@
                 <div class="space-y-3">
                     <div class="f-row bg-gray-50 p-2 rounded border border-gray-100">
                         <span class="f-label !w-32 text-gray-600 font-bold">Server Name:</span>
-                        <input type="text" id="db_server" value="DESKTOP-4P0F01E" class="f-input mono font-black flex-1 text-blue-700 border-blue-100 bg-white">
+                        <input type="text" id="db_server" value="PCIT\SQLEXPRESS" class="f-input mono font-black flex-1 text-blue-700 border-blue-100 bg-white">
                         <label class="check-box ml-3 bg-[#108042]/10 px-2 py-1 rounded border border-[#108042]/20 cursor-pointer">
                             <input type="checkbox" checked class="accent-[#108042]">
                             <span class="text-[10px] font-black text-[#108042] uppercase ml-1">Kích hoạt</span>
@@ -34,7 +34,7 @@
                         </div>
                         <div class="space-y-2 bg-gray-50/50 p-3 rounded-lg border border-dashed border-gray-300">
                             <div class="f-row"><span class="f-label !w-28 text-gray-500">UserName:</span><input type="text" id="db_user" value="sa" class="f-input flex-1 border-gray-200"></div>
-                            <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" id="db_pass" value="******" class="f-input flex-1 border-gray-200"></div>
+                            <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" id="db_pass" value="123ABC" class="f-input flex-1 border-gray-200"></div>
                             <div class="f-row"><span class="f-label !w-28 text-gray-700 font-bold">Database:</span><input type="text" id="db_name" value="khaservice_parking" class="f-input font-black text-red-700 flex-1 border-red-100 bg-red-50/30"></div>
                         </div>
                         <div id="db_test_status" class="mt-2 text-[10px] font-bold hidden"></div>
