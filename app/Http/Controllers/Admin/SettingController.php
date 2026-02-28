@@ -30,18 +30,22 @@ class SettingController extends Controller
                 ]);
             }
 
-            // Bước 2: Thử tạo DSN (Khớp Screenshot: Mandatory Encryption + Trust Certificate)
-            // Lưu ý: Không đưa Database vào đây khi test để tránh lỗi nếu DB chưa được tạo
+            // Bước 2: Thử tạo DSN (Kiểm tra cả Server và Database)
             $dsn = "sqlsrv:Server=$server;LoginTimeout=5;Encrypt=true;TrustServerCertificate=true";
+            if ($database) {
+                $dsn .= ";Database=$database";
+            }
             
             // Bước 3: Thử kết nối thực tế
             $conn = new PDO($dsn, $user, $pass, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
 
+            $msg = $database ? "KẾT NỐI THÀNH CÔNG TỚI DATABASE [$database]!" : "KẾT NỐI SERVER THÀNH CÔNG (Chưa chọn DB)!";
+
             return response()->json([
                 'success' => true,
-                'message' => 'KẾT NỐI SQL SERVER THÀNH CÔNG!'
+                'message' => $msg
             ]);
 
         } catch (\Throwable $e) {
