@@ -28,10 +28,28 @@
                                 <span class="bg-[#108042] w-2 h-2 rounded-full"></span>
                                 KẾT NỐI DATABASE SQL SERVER
                             </div>
-                            <button type="button" onclick="testDbConnection()" class="text-[9px] bg-white border border-[#108042] text-[#108042] px-2 py-0.5 rounded hover:bg-green-50 transition-all font-bold">
-                                <i class="fas fa-plug mr-1"></i> KIỂM TRA KẾT NỐI
-                            </button>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="toggleITNote()" class="text-[9px] bg-orange-50 border border-orange-400 text-orange-700 px-2 py-0.5 rounded hover:bg-orange-100 transition-all font-bold">
+                                    <i class="fas fa-info-circle mr-1"></i> GHI CHÚ IT
+                                </button>
+                                <button type="button" onclick="testDbConnection()" class="text-[9px] bg-white border border-[#108042] text-[#108042] px-2 py-0.5 rounded hover:bg-green-50 transition-all font-bold">
+                                    <i class="fas fa-plug mr-1"></i> KIỂM TRA KẾT NỐI
+                                </button>
+                            </div>
                         </div>
+
+                        <!-- Khối Ghi chú IT (Mặc định ẩn) -->
+                        <div id="it_note_box" class="hidden mb-3 p-3 bg-orange-50 border-l-4 border-orange-400 text-[10px] text-orange-900 leading-relaxed shadow-sm">
+                            <div class="font-black mb-1 uppercase"><i class="fas fa-exclamation-triangle mr-1"></i> Điều kiện kết nối thành công:</div>
+                            <ul class="list-disc pl-4 space-y-0.5">
+                                <li><strong>Bật TCP/IP:</strong> Trong SQL Server Configuration Manager > Network Configuration.</li>
+                                <li><strong>SQL Server Browser:</strong> Phải đang chạy (Running) để tìm thấy Instance \SQLEXPRESS.</li>
+                                <li><strong>Mixed Mode:</strong> Bật xác thực bằng tài khoản SQL (sa) trong thuộc tính Server.</li>
+                                <li><strong>Mở Port 1433:</strong> Cấu hình Inbound Rules trong Windows Firewall cho SQL Server.</li>
+                                <li><strong>Mandatory Encryption:</strong> Nếu Server yêu cầu mã hóa, hãy chắc chắn đã cài đủ Certificate.</li>
+                            </ul>
+                        </div>
+
                         <div class="space-y-2 bg-gray-50/50 p-3 rounded-lg border border-dashed border-gray-300">
                             <div class="f-row"><span class="f-label !w-28 text-gray-500">UserName:</span><input type="text" id="db_user" value="sa" class="f-input flex-1 border-gray-200"></div>
                             <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" id="db_pass" value="123ABC" class="f-input flex-1 border-gray-200"></div>

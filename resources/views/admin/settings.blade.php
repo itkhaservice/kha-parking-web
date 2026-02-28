@@ -233,6 +233,11 @@
         modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
     }
 
+    function toggleITNote() {
+        const noteBox = document.getElementById('it_note_box');
+        noteBox.classList.toggle('hidden');
+    }
+
     function selectPanel(el) {
         // Reset all panels
         document.querySelectorAll('.pricing-panel').forEach(p => {
