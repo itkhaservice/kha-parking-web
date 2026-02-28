@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #0B3D91;
+            --primary-brand: #108042;
             --bg-light: #F0F2F5;
             --panel-white: #FFFFFF;
             --border-light: #D1D5DB;
@@ -44,7 +44,7 @@
             height: 7vh;
             min-height: 50px;
             background: linear-gradient(to bottom, #FFFFFF, #F9FAFB);
-            border-bottom: 3px solid var(--primary-blue);
+            border-bottom: 3px solid var(--primary-brand);
             display: grid;
             grid-template-columns: 1.2fr 0.8fr 1fr;
             align-items: center;
@@ -107,11 +107,11 @@
             top: 5px;
             left: 5px;
             background: rgba(255,255,255,0.9);
-            color: var(--primary-blue);
+            color: var(--primary-brand);
             font-size: 8px;
             font-weight: 900;
             padding: 2px 8px;
-            border-left: 3px solid var(--primary-blue);
+            border-left: 3px solid var(--primary-brand);
             z-index: 10;
             border-radius: 2px;
         }
@@ -233,21 +233,20 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <header>
         <div class="flex items-center space-x-6">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-900 rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
-                <h1 class="text-base font-black tracking-widest text-blue-900">KHA-PARKING</h1>
+                <div class="w-8 h-8 bg-[#108042] rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
+                <h1 class="text-base font-black tracking-widest text-[#108042]">KHA-PARKING</h1>
             </div>
             <div class="h-4 w-[1px] bg-gray-300"></div>
             <div class="flex items-center space-x-4">
-                <button onclick="checkAdmin('guard')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP</button>
-                <button onclick="checkAdmin('settings')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-cog"></i> CÀI ĐẶT</button>
-                <button onclick="checkAdmin('management')" class="text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1"><i class="fas fa-user-shield"></i> QUẢN TRỊ</button>
+                <button onclick="checkAdmin('guard')" class="text-[10px] font-bold text-gray-500 hover:text-[#108042] hover:underline transition flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP</button>
+                <button onclick="checkAdmin('settings')" class="text-[10px] font-bold text-gray-500 hover:text-[#108042] hover:underline transition flex items-center gap-1"><i class="fas fa-cog"></i> CÀI ĐẶT</button>
+                <button onclick="checkAdmin('management')" class="text-[10px] font-bold text-gray-500 hover:text-[#108042] hover:underline transition flex items-center gap-1"><i class="fas fa-user-shield"></i> QUẢN TRỊ</button>
             </div>
         </div>
-        <div class="text-center"><div id="clock" class="text-clock text-blue-700">10:15:20 - 28/02/2026</div></div>
+        <div class="text-center"><div id="clock" class="text-clock text-[#108042]">10:15:20 - 28/02/2026</div></div>
         <div class="flex justify-end">
             <div class="stat-group">
                 <div class="stat-item"><span class="text-label">Doanh thu:</span><span class="text-value text-orange-600">1,250,000</span></div>
@@ -261,21 +260,21 @@
 
     <!-- Admin Login Modal -->
     <div id="adminModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200]">
-        <div class="bg-white p-8 border-t-4 border-blue-900 shadow-2xl w-80 rounded-sm">
-            <h2 class="text-sm font-black mb-6 text-blue-900 text-center uppercase tracking-widest">Xác nhận IT Admin</h2>
+        <div class="bg-white p-8 border-t-4 border-[#108042] shadow-2xl w-80 rounded-sm">
+            <h2 class="text-sm font-black mb-6 text-[#108042] text-center uppercase tracking-widest">Xác nhận IT Admin</h2>
             <div class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Tài khoản</label>
-                    <input type="text" id="adminUser" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-blue-900 focus:outline-none text-center font-bold">
+                    <input type="text" id="adminUser" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Mật khẩu</label>
-                    <input type="password" id="adminPass" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-blue-900 focus:outline-none text-center font-bold">
+                    <input type="password" id="adminPass" class="w-full border border-gray-300 px-3 py-2 text-sm focus:border-[#108042] focus:outline-none text-center font-bold">
                 </div>
                 <div id="authError" class="hidden text-red-600 text-[10px] text-center font-bold uppercase tracking-tighter">Thông tin không chính xác!</div>
                 <div class="grid grid-cols-2 gap-3 pt-2">
                     <button onclick="closeModal()" class="text-xs font-bold text-gray-400 hover:text-gray-600 uppercase">Hủy</button>
-                    <button onclick="verifyLogin()" class="bg-blue-900 text-white text-xs py-2 font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform">Xác nhận</button>
+                    <button onclick="verifyLogin()" class="bg-[#108042] text-white text-xs py-2 font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform">Xác nhận</button>
                 </div>
             </div>
         </div>

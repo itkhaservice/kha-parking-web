@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #0B3D91;
+            --primary-brand: #108042;
             --bg-light: #F0F2F5;
             --panel-white: #FFFFFF;
             --border-color: #D1D5DB;
@@ -16,13 +16,13 @@
             --text-muted: #6B7280;
         }
         body { background-color: var(--bg-light); color: var(--text-dark); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
+
         /* HEADER - SYNCED WITH DASHBOARD */
         header.main-header {
             height: 7vh;
             min-height: 50px;
             background: linear-gradient(to bottom, #FFFFFF, #F9FAFB);
-            border-bottom: 3px solid var(--primary-blue);
+            border-bottom: 3px solid var(--primary-brand);
             display: grid;
             grid-template-columns: 1.2fr 0.8fr 1fr;
             align-items: center;
@@ -31,7 +31,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .text-clock { font-size: clamp(16px, 1.4vw, 24px); font-weight: 700; font-family: 'Courier New', monospace; color: #1D4ED8; }
+        .text-clock { font-size: clamp(16px, 1.4vw, 24px); font-weight: 700; font-family: 'Courier New', monospace; color: var(--primary-brand); }
         .text-label { font-size: clamp(8px, 0.55vw, 10px); text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 800; }
         .text-value { font-size: clamp(11px, 0.85vw, 15px); font-weight: 700; color: var(--text-dark); }
 
@@ -48,26 +48,26 @@
         .stat-divider { width: 1px; height: 12px; background: var(--border-color); }
 
         /* Navigation Buttons */
-        .nav-link { @apply text-[10px] font-bold text-gray-500 hover:text-blue-700 hover:underline transition flex items-center gap-1 uppercase; }
-        .nav-link.active { @apply text-blue-700 underline; }
+        .nav-link { @apply text-[10px] font-bold text-gray-500 hover:text-[#108042] hover:underline transition flex items-center gap-1 uppercase; }
+        .nav-link.active { @apply text-[#108042] underline; }
 
         /* Content Area */
         main.admin-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
     </style>
-</head>
-<body>
+    </head>
+    <body>
 
     <header class="main-header">
         <div class="flex items-center space-x-6">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-900 rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
-                <h1 class="text-base font-black tracking-widest text-blue-900">KHA-PARKING</h1>
+                <div class="w-8 h-8 bg-[#108042] rounded flex items-center justify-center font-bold text-white text-sm shadow-sm">KP</div>
+                <h1 class="text-base font-black tracking-widest text-[#108042]">KHA-PARKING</h1>
             </div>
             <div class="h-4 w-[1px] bg-gray-300"></div>
         </div>
-        
+
         <div class="text-center">
-            <div id="global-clock" class="text-clock text-blue-700">10:15:20 - 28/02/2026</div>
+            <div id="global-clock" class="text-clock">10:15:20 - 28/02/2026</div>
         </div>
 
         <div class="flex justify-end">
