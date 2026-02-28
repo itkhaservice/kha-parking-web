@@ -51,7 +51,7 @@
                         <div class="space-y-2 bg-gray-50/50 p-3 rounded-lg border border-dashed border-gray-300">
                             <div class="f-row"><span class="f-label !w-28 text-gray-500">UserName:</span><input type="text" id="db_user" name="db_user" value="sa" class="f-input flex-1 border-gray-200"></div>
                             <div class="f-row"><span class="f-label !w-28 text-gray-500">Password:</span><input type="password" id="db_pass" name="db_pass" value="123ABC" class="f-input flex-1 border-gray-200"></div>
-                            <div class="f-row"><span class="f-label !w-28 text-gray-700 font-bold">Database:</span><input type="text" id="db_name" name="db_name" value="khaservice_parking" class="f-input font-black text-red-700 flex-1 border-red-100 bg-red-50/30"></div>
+                            <div class="f-row"><span class="f-label !w-28 text-gray-700 font-bold">Database:</span><input type="text" id="db_name" name="db_name" value="kha_parking_db" class="f-input font-black text-red-700 flex-1 border-red-100 bg-red-50/30"></div>
                         </div>
                         <div id="db_test_status" class="mt-2 text-[10px] font-bold hidden"></div>
                     </div>
