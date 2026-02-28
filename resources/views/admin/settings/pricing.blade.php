@@ -145,4 +145,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Action Bar cho Tab Giá Tiền -->
+    <div class="mt-8 flex justify-end gap-3 border-t border-gray-200 pt-4">
+        <button onclick="window.location.href='{{ route('dashboard.guard') }}'" class="btn-action !h-10 px-8 font-black uppercase tracking-widest border-gray-400">THOÁT</button>
+        <button onclick="saveAllSettings()" class="btn-action btn-blue !h-10 px-12 font-black uppercase tracking-widest shadow-lg shadow-green-900/20">LƯU CẤU HÌNH BẢNG GIÁ</button>
+    </div>
 </div>
