@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\Api\ParkingController;
+
+Route::post('/vehicle-in', [ParkingController::class, 'vehicleIn']);
+Route::post('/vehicle-out', [ParkingController::class, 'vehicleOut']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

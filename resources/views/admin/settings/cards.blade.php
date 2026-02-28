@@ -21,12 +21,6 @@
                             <tbody id="card-type-list">
                                 @php
                                     $cardTypes = json_decode($settings['card_types_json'] ?? '[]', true);
-                                    if (empty($cardTypes)) {
-                                        $cardTypes = [
-                                            ['code' => 'VT', 'name' => 'Vé tháng cư dân', 'is_charge' => '0'],
-                                            ['code' => 'VL', 'name' => 'Vé lượt vãng lai', 'is_charge' => '1']
-                                        ];
-                                    }
                                 @endphp
                                 @foreach($cardTypes as $card)
                                 <tr class="cursor-pointer hover:bg-green-50" onclick="editCardRow(this)">

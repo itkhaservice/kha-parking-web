@@ -91,6 +91,10 @@ return [
             'prefix_indexes' => true,
             'encrypt' => 'no',
             'trust_server_certificate' => 'true',
+            'options' => [
+                PDO::ATTR_TIMEOUT => 2, // 2 seconds timeout for general operations
+                'LoginTimeout' => 2,    // 2 seconds timeout for initial connection
+            ],
         ],
 
     ],

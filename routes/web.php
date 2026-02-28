@@ -10,7 +10,13 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return view('dashboard.guard');
+    try {
+        // Kiểm tra kết nối và bảng settings
+        $settings = \Illuminate\Support\Facades\DB::table('settings')->pluck('value', 'key')->all();
+    } catch (\Exception $e) {
+        $settings = [];
+    }
+    return view('dashboard.guard', compact('settings'));
 })->name('dashboard.guard');
 
 // Login Logic cho IT Admin (Xử lý Session Server)

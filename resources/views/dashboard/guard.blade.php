@@ -293,11 +293,27 @@
     <!-- MAIN BODY -->
     <div class="dashboard-body">
         
-        <!-- LEFT LANE -->
+        <!-- LEFT LANE (LÀN RA - Theo ví dụ trong code trước đó) -->
         <div class="lane-container">
             <div class="media-section">
-                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP BIỂN SỐ — CAM 05</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
-                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP TOÀN CẢNH — CAM 06</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+                <div class="camera-placeholder">
+                    <span class="cam-tag">BIỂN SỐ — RA</span>
+                    @if(isset($settings['cam_out_plate']))
+                        <img src="{{ $settings['cam_out_plate'] }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-400 font-bold text-[10px] uppercase">Lỗi kết nối Cam</div>
+                    @else
+                        <i class="fas fa-video-slash opacity-20 text-4xl"></i>
+                    @endif
+                </div>
+                <div class="camera-placeholder">
+                    <span class="cam-tag">TOÀN CẢNH — RA</span>
+                    @if(isset($settings['cam_out_view']))
+                        <img src="{{ $settings['cam_out_view'] }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-400 font-bold text-[10px] uppercase">Lỗi kết nối Cam</div>
+                    @else
+                        <i class="fas fa-video-slash opacity-20 text-4xl"></i>
+                    @endif
+                </div>
             </div>
 
             <div class="lane-info-grid">
@@ -349,11 +365,27 @@
             <div class="status-bar bg-error"><i class="fas fa-exclamation-triangle mr-3"></i> SAI BIỂN SỐ - CẢNH BÁO</div>
         </div>
 
-        <!-- RIGHT LANE -->
+        <!-- RIGHT LANE (LÀN VÀO) -->
         <div class="lane-container">
             <div class="media-section">
-                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP BIỂN SỐ — CAM 01</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
-                <div class="camera-placeholder"><span class="cam-tag">TRỰC TIẾP TOÀN CẢNH — CAM 02</span><i class="fas fa-video-slash opacity-20 text-4xl"></i></div>
+                <div class="camera-placeholder">
+                    <span class="cam-tag">BIỂN SỐ — VÀO</span>
+                    @if(isset($settings['cam_in_plate']))
+                        <img src="{{ $settings['cam_in_plate'] }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-400 font-bold text-[10px] uppercase">Lỗi kết nối Cam</div>
+                    @else
+                        <i class="fas fa-video-slash opacity-20 text-4xl"></i>
+                    @endif
+                </div>
+                <div class="camera-placeholder">
+                    <span class="cam-tag">TOÀN CẢNH — VÀO</span>
+                    @if(isset($settings['cam_in_view']))
+                        <img src="{{ $settings['cam_in_view'] }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-400 font-bold text-[10px] uppercase">Lỗi kết nối Cam</div>
+                    @else
+                        <i class="fas fa-video-slash opacity-20 text-4xl"></i>
+                    @endif
+                </div>
             </div>
 
             <div class="lane-info-grid">

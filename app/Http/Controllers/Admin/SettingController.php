@@ -15,8 +15,14 @@ class SettingController extends Controller
      */
     public function index()
     {
-        // Lấy toàn bộ settings và pluck ra dạng [key => value]
-        $settings = DB::table('settings')->pluck('value', 'key')->all();
+        $settings = [];
+        try {
+            // Lấy toàn bộ settings và pluck ra dạng [key => value]
+            $settings = DB::table('settings')->pluck('value', 'key')->all();
+        } catch (\Exception $e) {
+            // Log lỗi nhưng không làm sập trang để Admin IT có thể vào cấu hình DB
+            \Log::warning('Settings table not found or DB connection failed. System in Config Mode. ' . $e->getMessage());
+        }
         
         return view('admin.settings', compact('settings'));
     }

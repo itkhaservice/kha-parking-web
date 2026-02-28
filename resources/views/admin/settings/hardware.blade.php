@@ -9,13 +9,41 @@
                 </span>
                 
                 <div class="space-y-3 mb-4">
-                    <div class="f-row bg-blue-50/50 p-2 rounded border border-blue-100">
-                        <span class="f-label !w-24 text-blue-800 font-bold">Cam Biển Số:</span>
-                        <input type="text" name="cam_in_plate" value="{{ $settings['cam_in_plate'] ?? 'rtsp://admin:123456@192.168.1.101:554/ch1/main' }}" class="f-input mono text-[10px] flex-1 bg-white border-blue-200">
+                    <div class="bg-blue-50/50 p-2 rounded border border-blue-100">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="f-label text-blue-800 font-bold uppercase text-[10px]">Cam Biển Số:</span>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="previewCamera('cam_in_plate')" class="text-[9px] font-black text-blue-600 hover:underline"><i class="fas fa-eye"></i> XEM THỬ</button>
+                                <select name="cam_in_plate_type" id="cam_in_plate_type" class="f-input !h-5 !py-0 text-[9px] font-bold border-blue-200">
+                                    <option value="rtsp" {{ ($settings['cam_in_plate_type'] ?? '') == 'rtsp' ? 'selected' : '' }}>RTSP (Trực tiếp)</option>
+                                    <option value="http" {{ ($settings['cam_in_plate_type'] ?? '') == 'http' ? 'selected' : '' }}>HTTP (MJPEG)</option>
+                                    <option value="snapshot" {{ ($settings['cam_in_plate_type'] ?? '') == 'snapshot' ? 'selected' : '' }}>SNAPSHOT (JPEG)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" name="cam_in_plate" id="cam_in_plate" value="{{ $settings['cam_in_plate'] ?? 'rtsp://admin:123456@192.168.1.101:554/ch1/main' }}" class="f-input mono text-[10px] w-full bg-white border-blue-200" placeholder="URL luồng video hoặc ảnh">
+                        <div id="preview_cam_in_plate" class="hidden mt-2 aspect-video bg-black rounded overflow-hidden relative border border-blue-300">
+                            <img src="" class="w-full h-full object-contain">
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-[10px] bg-black/50 loading-text hidden">Đang tải luồng...</div>
+                        </div>
                     </div>
-                    <div class="f-row bg-gray-50 p-2 rounded border border-gray-100">
-                        <span class="f-label !w-24 text-gray-600 font-bold">Cam Toàn Cảnh:</span>
-                        <input type="text" name="cam_in_view" value="{{ $settings['cam_in_view'] ?? 'rtsp://admin:123456@192.168.1.102:554/ch1/main' }}" class="f-input mono text-[10px] flex-1 border-gray-200 bg-white">
+                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="f-label text-gray-600 font-bold uppercase text-[10px]">Cam Toàn Cảnh:</span>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="previewCamera('cam_in_view')" class="text-[9px] font-black text-blue-600 hover:underline"><i class="fas fa-eye"></i> XEM THỬ</button>
+                                <select name="cam_in_view_type" id="cam_in_view_type" class="f-input !h-5 !py-0 text-[9px] font-bold border-gray-200">
+                                    <option value="rtsp" {{ ($settings['cam_in_view_type'] ?? '') == 'rtsp' ? 'selected' : '' }}>RTSP (Trực tiếp)</option>
+                                    <option value="http" {{ ($settings['cam_in_view_type'] ?? '') == 'http' ? 'selected' : '' }}>HTTP (MJPEG)</option>
+                                    <option value="snapshot" {{ ($settings['cam_in_view_type'] ?? '') == 'snapshot' ? 'selected' : '' }}>SNAPSHOT (JPEG)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" name="cam_in_view" id="cam_in_view" value="{{ $settings['cam_in_view'] ?? 'rtsp://admin:123456@192.168.1.102:554/ch1/main' }}" class="f-input mono text-[10px] w-full border-gray-200 bg-white" placeholder="URL luồng video hoặc ảnh">
+                        <div id="preview_cam_in_view" class="hidden mt-2 aspect-video bg-black rounded overflow-hidden relative border border-gray-300">
+                            <img src="" class="w-full h-full object-contain">
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-[10px] bg-black/50 loading-text hidden">Đang tải luồng...</div>
+                        </div>
                     </div>
                 </div>
 
@@ -44,13 +72,41 @@
                 </span>
                 
                 <div class="space-y-3 mb-4">
-                    <div class="f-row bg-red-50/50 p-2 rounded border border-red-100">
-                        <span class="f-label !w-24 text-red-800 font-bold">Cam Biển Số:</span>
-                        <input type="text" name="cam_out_plate" value="{{ $settings['cam_out_plate'] ?? 'rtsp://admin:123456@192.168.1.103:554/ch1/main' }}" class="f-input mono text-[10px] flex-1 bg-white border-red-200">
+                    <div class="bg-red-50/50 p-2 rounded border border-red-100">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="f-label text-red-800 font-bold uppercase text-[10px]">Cam Biển Số:</span>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="previewCamera('cam_out_plate')" class="text-[9px] font-black text-red-600 hover:underline"><i class="fas fa-eye"></i> XEM THỬ</button>
+                                <select name="cam_out_plate_type" id="cam_out_plate_type" class="f-input !h-5 !py-0 text-[9px] font-bold border-red-200">
+                                    <option value="rtsp" {{ ($settings['cam_out_plate_type'] ?? '') == 'rtsp' ? 'selected' : '' }}>RTSP (Trực tiếp)</option>
+                                    <option value="http" {{ ($settings['cam_out_plate_type'] ?? '') == 'http' ? 'selected' : '' }}>HTTP (MJPEG)</option>
+                                    <option value="snapshot" {{ ($settings['cam_out_plate_type'] ?? '') == 'snapshot' ? 'selected' : '' }}>SNAPSHOT (JPEG)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" name="cam_out_plate" id="cam_out_plate" value="{{ $settings['cam_out_plate'] ?? 'rtsp://admin:123456@192.168.1.103:554/ch1/main' }}" class="f-input mono text-[10px] w-full bg-white border-red-200" placeholder="URL luồng video hoặc ảnh">
+                        <div id="preview_cam_out_plate" class="hidden mt-2 aspect-video bg-black rounded overflow-hidden relative border border-red-300">
+                            <img src="" class="w-full h-full object-contain">
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-[10px] bg-black/50 loading-text hidden">Đang tải luồng...</div>
+                        </div>
                     </div>
-                    <div class="f-row bg-gray-50 p-2 rounded border border-gray-100">
-                        <span class="f-label !w-24 text-gray-600 font-bold">Cam Toàn Cảnh:</span>
-                        <input type="text" name="cam_out_view" value="{{ $settings['cam_out_view'] ?? 'rtsp://admin:123456@192.168.1.104:554/ch1/main' }}" class="f-input mono text-[10px] flex-1 border-gray-200 bg-white">
+                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="f-label text-gray-600 font-bold uppercase text-[10px]">Cam Toàn Cảnh:</span>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="previewCamera('cam_out_view')" class="text-[9px] font-black text-red-600 hover:underline"><i class="fas fa-eye"></i> XEM THỬ</button>
+                                <select name="cam_out_view_type" id="cam_out_view_type" class="f-input !h-5 !py-0 text-[9px] font-bold border-gray-200">
+                                    <option value="rtsp" {{ ($settings['cam_out_view_type'] ?? '') == 'rtsp' ? 'selected' : '' }}>RTSP (Trực tiếp)</option>
+                                    <option value="http" {{ ($settings['cam_out_view_type'] ?? '') == 'http' ? 'selected' : '' }}>HTTP (MJPEG)</option>
+                                    <option value="snapshot" {{ ($settings['cam_out_view_type'] ?? '') == 'snapshot' ? 'selected' : '' }}>SNAPSHOT (JPEG)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" name="cam_out_view" id="cam_out_view" value="{{ $settings['cam_out_view'] ?? 'rtsp://admin:123456@192.168.1.104:554/ch1/main' }}" class="f-input mono text-[10px] w-full border-gray-200 bg-white" placeholder="URL luồng video hoặc ảnh">
+                        <div id="preview_cam_out_view" class="hidden mt-2 aspect-video bg-black rounded overflow-hidden relative border border-gray-300">
+                            <img src="" class="w-full h-full object-contain">
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-[10px] bg-black/50 loading-text hidden">Đang tải luồng...</div>
+                        </div>
                     </div>
                 </div>
 
@@ -79,3 +135,37 @@
         <button onclick="saveAllSettings()" class="btn-action btn-blue !h-10 px-12 font-black uppercase tracking-widest shadow-lg">LƯU CẤU HÌNH THIẾT BỊ</button>
     </div>
 </div>
+
+<script>
+    function previewCamera(id) {
+        const url = document.getElementById(id).value;
+        const type = document.getElementById(id + '_type').value;
+        const previewDiv = document.getElementById('preview_' + id);
+        const img = previewDiv.querySelector('img');
+        const loading = previewDiv.querySelector('.loading-text');
+
+        if (!url) { alert('Vui lòng nhập URL Camera!'); return; }
+
+        // Hiển thị khung preview
+        previewDiv.classList.toggle('hidden');
+        if (previewDiv.classList.contains('hidden')) return;
+
+        loading.classList.remove('hidden');
+        
+        if (type === 'rtsp') {
+            // RTSP không chạy trực tiếp trên web được, báo cho IT biết
+            img.src = '';
+            loading.innerText = '⚠️ RTSP: Trình duyệt không hỗ trợ xem trực tiếp chuẩn này. Cần qua Server trung gian hoặc dùng APP.';
+            loading.classList.remove('hidden');
+        } else {
+            // MJPEG hoặc Snapshot thì nạp thẳng vào img
+            img.src = url + (type === 'snapshot' ? '?t=' + new Date().getTime() : '');
+            img.onload = () => loading.classList.add('hidden');
+            img.onerror = () => {
+                loading.innerText = '❌ LỖI: Không thể kết nối tới Camera!';
+                loading.classList.remove('hidden');
+                img.classList.add('hidden');
+            };
+        }
+    }
+</script>
