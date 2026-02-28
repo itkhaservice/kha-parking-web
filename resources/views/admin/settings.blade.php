@@ -264,6 +264,12 @@
         const name = document.getElementById('db_name').value;
         const server = document.getElementById('db_server').value;
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfToken) {
+            alert('Lỗi: Không tìm thấy CSRF Token trên trang!');
+            return;
+        }
+
         statusEl.classList.remove('hidden', 'text-green-600', 'text-red-600');
         statusEl.classList.add('text-blue-600');
         statusEl.innerText = 'Đang kiểm tra kết nối (Timeout 5s)...';
@@ -272,7 +278,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'X-CSRF-TOKEN': csrfToken.getAttribute('content')
             },
             body: JSON.stringify({
                 server_name: server,
@@ -281,14 +287,21 @@
                 db_name: name
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
         .then(data => {
             statusEl.innerText = (data.success ? '✓ ' : '✕ ') + data.message;
             statusEl.classList.remove('text-blue-600');
             statusEl.classList.add(data.success ? 'text-green-600' : 'text-red-600');
         })
         .catch(error => {
-            statusEl.innerText = '✕ Lỗi kết nối hệ thống!';
+            console.error('Fetch Error:', error);
+            statusEl.innerText = '✕ ' + (error.message || 'Lỗi kết nối hệ thống!');
+            statusEl.classList.remove('text-blue-600');
             statusEl.classList.add('text-red-600');
         });
     }

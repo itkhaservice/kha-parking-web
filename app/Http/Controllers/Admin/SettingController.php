@@ -20,18 +20,20 @@ class SettingController extends Controller
         $pass = $request->input('db_pass');
         $database = $request->input('db_name');
 
-        // Kiểm tra Driver trước khi thử kết nối
-        if (!in_array('sqlsrv', PDO::getAvailableDrivers())) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi: Máy chủ PHP chưa cài đặt Driver SQLSRV!'
-            ], 500);
-        }
-
         try {
-            // Thêm LoginTimeout vào DSN để báo lỗi nhanh
+            // Bước 1: Kiểm tra PDO Drivers
+            $drivers = PDO::getAvailableDrivers();
+            if (!in_array('sqlsrv', $drivers)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Lỗi: Máy chủ thiếu Driver [sqlsrv]. Drivers hiện có: ' . implode(',', $drivers)
+                ]);
+            }
+
+            // Bước 2: Thử tạo DSN
             $dsn = "sqlsrv:Server=$server;Database=$database;LoginTimeout=5;Encrypt=false;TrustServerCertificate=true";
             
+            // Bước 3: Thử kết nối thực tế
             $conn = new PDO($dsn, $user, $pass, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
@@ -40,16 +42,13 @@ class SettingController extends Controller
                 'success' => true,
                 'message' => 'Kết nối SQL Server thành công!'
             ]);
-        } catch (Exception $e) {
-            // Trả về thông báo lỗi ngắn gọn
-            $errorMsg = $e->getMessage();
-            if (str_contains($errorMsg, 'Login timeout expired')) {
-                $errorMsg = 'Lỗi: Không tìm thấy Server (Timeout 5s)';
-            }
+
+        } catch (\Throwable $e) {
+            // Bắt mọi loại lỗi kể cả Fatal Error
             return response()->json([
                 'success' => false,
-                'message' => $errorMsg
-            ], 200); // Trả về 200 để JS xử lý thông báo đẹp
+                'message' => 'Lỗi hệ thống: ' . $e->getMessage() . ' (File: ' . basename($e->getFile()) . ' L:' . $e->getLine() . ')'
+            ]);
         }
     }
 
