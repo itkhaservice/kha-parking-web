@@ -81,20 +81,17 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => '127.0.0.1',
-            'port' => '1433',
-            'database' => 'kha_parking_db',
-            'username' => 'sa',
-            'password' => '123ABC',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'encrypt' => 'no',
-            'trust_server_certificate' => 'true',
-            'options' => [
-                PDO::ATTR_TIMEOUT => 2, // 2 seconds timeout for general operations
-                'LoginTimeout' => 2,    // 2 seconds timeout for initial connection
-            ],
+            // Sử dụng giá trị boolean thay vì string
+            'encrypt' => env('DB_ENCRYPT', 'no'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
 
     ],

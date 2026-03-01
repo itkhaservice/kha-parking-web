@@ -1,4 +1,5 @@
 @echo off
+pushd "%~dp0"
 setlocal enabledelayedexpansion
 
 title "KHA-PARKING | SETUP MAY MOI (ONE-CLICK)"
@@ -34,6 +35,15 @@ if not exist "%PHP_BIN%" (
     )
 )
 
+:: Kiem tra PHP co chay duoc ko (loi thieu VC Redist)
+"%PHP_BIN%" -v >nul 2>&1
+if !errorlevel! neq 0 (
+    echo  - [!] LOI NGHIEM TRONG: Khong the thuc thi PHP! 
+    echo    Vui long cai dat "Visual C++ Redistributable 2019" de tiep tuc.
+    pause
+    exit /b
+)
+
 :: 3. Cau hinh Virtual Hostname (parking-db)
 echo.
 echo [2/5] Dang cau hinh Hostname 'parking-db' vao he thong...
@@ -57,23 +67,45 @@ if not exist .env (
 
 :: 5. Tao APP_KEY (Laravel Security)
 echo.
-echo [4/5] Dang tao ma bao mat ung dung...
+echo [4/6] Dang tao ma bao mat ung dung...
 "%PHP_BIN%" artisan key:generate --no-interaction
 echo  - [OK] Da tao APP_KEY thanh cong.
 
-:: 6. Thong bao ve SQL Server
+:: 6. Tu dong cau hinh SQL Server (TCP/IP & Port 1433)
 echo.
-echo [5/5] KIEM TRA DATABASE (QUAN TRONG):
-echo  - Vui long dam bao ban da cai dat SQL Server (Express/Standard).
-echo  - Hay tao mot Database ten la: kha_parking_db
-echo  - Mat khau 'sa' mac dinh: 123ABC (Co the doi trong .env)
+echo [5/6] DANG TU DONG CAU HINH SQL SERVER...
+echo  - Dang quet va bat giao thuc TCP/IP...
+for /f "tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL" 2^>nul') do (
+    set "INST_ID=%%a"
+    echo    + Cau hinh Instance: !INST_ID!
+    reg add "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\!INST_ID!\MSSQLServer\SuperSocketNetLib\Tcp" /v Enabled /t REG_DWORD /d 1 /f >nul 2>&1
+    reg add "HKLM\SOFTWARE\Microsoft\Microsoft SQL Server\!INST_ID!\MSSQLServer\SuperSocketNetLib\Tcp\IPAll" /v TcpPort /t REG_SZ /d 1433 /f >nul 2>&1
+)
+echo  - Dang mo Firewall Port 1433...
+netsh advfirewall firewall add rule name="KHA-PARKING-SQL" dir=in action=allow protocol=TCP localport=1433 profile=any >nul 2>&1
+echo  - Dang khoi dong lai dich vu SQL Server (Vui long cho)...
+net stop MSSQLSERVER /y >nul 2>&1
+net start MSSQLSERVER >nul 2>&1
+net stop MSSQL$SQLEXPRESS /y >nul 2>&1
+net start MSSQL$SQLEXPRESS >nul 2>&1
+echo  - [OK] Da cau hinh va mo ket noi SQL Server.
+
+:: 7. Thong bao ve SQL Server
 echo.
-set /p run_migrate="Ban co muon chay Migration de tao bang ngay bay gio ko? (Y/N): "
+echo [6/6] KHOI TAO DU LIEU:
+echo  - Database yeu cau: kha_parking_db (sa / 123ABC)
+echo.
+set /p run_migrate="Ban co muon Tu dong tao cac bang du lieu (Database tables) ngay bay gio ko? (Y/N): "
 if /i "%run_migrate%"=="Y" (
     echo.
-    echo  [*] Dang thiet lap bang du lieu...
+    echo  [*] Dang khoi tao cac bang du lieu...
     "%PHP_BIN%" artisan migrate --seed --force
-    echo  - [OK] Da tao cac bang du lieu va nạp tai khoan IT Admin.
+    if !errorlevel! equ 0 (
+        echo  - [OK] Da tao cac bang du lieu va nap tai khoan IT Admin.
+    ) else (
+        echo  - [!] LOI: Khong the ket noi den SQL Server hoac chua co Database 'kha_parking_db'.
+        echo    Hay dam bao SQL Server dang chay va da tao DB nhu huong dan o tren.
+    )
 )
 
 echo.
@@ -83,7 +115,7 @@ echo ======================================================
 echo  1. Bay gio ban co the chay file: Kha-Parking-Start.bat
 echo  2. Truy cap: http://localhost:8000
 echo.
-echo  - Account IT: it@khaservice.vn
+echo  - Account IT: ITKHA
 echo  - Password:   0310341786
 echo ======================================================
 echo.

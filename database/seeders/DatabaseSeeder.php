@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         // Create IT Admin User
         $itRole = Role::where('slug', 'it')->first();
         User::firstOrCreate(
-            ['email' => 'it@khaservice.vn'],
+            ['email' => 'ITKHA'],
             [
                 'name' => 'ITKHA',
                 'password' => Hash::make('0310341786'),

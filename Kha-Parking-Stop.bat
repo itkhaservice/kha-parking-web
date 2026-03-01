@@ -1,4 +1,5 @@
 @echo off
+pushd "%~dp0"
 title KHA-PARKING - STOP SYSTEM
 color 0C
 cls
