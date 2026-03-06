@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\Api\ParkingController;
+use App\Http\Controllers\Api\CameraController;
 
 Route::post('/vehicle-in', [ParkingController::class, 'vehicleIn']);
 Route::post('/vehicle-out', [ParkingController::class, 'vehicleOut']);
+
+Route::prefix('camera')->group(function () {
+    Route::get('test/{lane}', [CameraController::class, 'testSnapshot']);
+    Route::get('status/{lane}', [CameraController::class, 'healthCheck']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
